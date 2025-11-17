@@ -60,7 +60,8 @@ async function requireAuth(req: express.Request, res: express.Response, next: ex
     return res.status(401).json({ message: "Utilizador não encontrado" });
   }
 
-  (req as any).user = user;
+  // CRITICAL: Always sanitize user before attaching to request to prevent password leaks
+  (req as any).user = sanitizeUser(user);
   next();
 }
 
