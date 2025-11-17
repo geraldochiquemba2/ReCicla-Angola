@@ -1,0 +1,180 @@
+O que é o ReCicla+ Angola?
+
+O *ReCicla+ Angola* é uma plataforma digital (app + sistema web) criada para conectar os geradores de resíduos recicláveis — como famílias, condomínios, empresas e pequenos comerciantes — aos recicladores (catadores, cooperativas e empresas de reciclagem), tornando o processo de recolha mais rápido, eficiente e lucrativo para todos.
+
+O projeto transforma a reciclagem num processo organizado, transparente e incentivado, promovendo a economia circular em Angola.
+
+Ele funciona como uma ponte, onde:
+
+ quem tem resíduos recicláveis ganha pontos/dinheiro ao disponibilizá-los
+ quem recicla encontra locais, recolhe com eficiência e aumenta sua renda o ambiente ganha com menos lixo e mais reaproveitamento
+
+É tecnologia + impacto social + sustentabilidade num só sistema. 💚♻️
+
+Quais funcionalidades o ReCicla+ deve ter?
+
+Visão geral completa do sistema.
+
+
+1. Cadastro de Utilizadores (Dois Tipos de Conta)
+
+✔️ Gerador de resíduos (dono de casa, empresa, condomínio)
+✔️ Reciclador (catador, cooperativa, empresa recicladora)
+
+Cada tipo de conta tem permissões e funcionalidades diferentes.
+
+2. Mapa Interativo com Geolocalização
+
+O mapa é o coração do sistema.
+Ele deve mostrar:
+
+Para o Reciclador:
+
+* pontos de recolha próximos
+* quantidade e tipo de resíduos disponíveis
+* rotas otimizadas (melhor caminho para recolher mais em menos tempo)
+
+Para o Gerador:
+
+* recicladors próximos
+* estado da recolha (aguardando, aceito, concluído)
+
+
+3. Sistema de Disponibilização de Resíduos
+
+O gerador pode:
+
+* criar um “pedido de recolha”
+* informar o tipo de resíduo (plástico, papel, vidro, metal…)
+* informar a quantidade
+* tirar foto (opcional)
+* marcar a localização no mapa
+
+Este ponto aparece automaticamente no mapa dos recicladores.
+
+
+4. Aceitação e Coleta pelo Reciclador
+
+O reciclador vê os pontos no mapa e pode:
+
+* aceitar a recolha
+* iniciar deslocamento
+* recolher o resíduo
+* finalizar a coleta
+* desaparecer o ponto do mapa
+
+Tudo registado no sistema.
+
+
+
+5. Sistema de Pontos e Recompensas
+
+Cada recolha gera pontos, que podem ser convertidos em:
+
+* dinheiro
+* descontos
+* vales
+* prémios
+* saldo para compras em lojas parceiras
+
+Ambos ganham pontos:
+
+* o gerador por disponibilizar resíduos
+* o reciclador por recolher
+
+O valor 1 ponto = X Kz (defini 100 Kz, mas pode ajustar).
+
+
+6. Perfil com Histórico e Estatísticas
+
+O utilizador tem:
+
+* número de recolhas feitas
+* total de resíduos reciclados
+* pontos acumulados
+* valor ganho
+* impacto ambiental (por exemplo: “tu evitaste 12kg de plástico no meio ambiente”)
+
+
+7. Notificações Inteligentes
+
+* “O reciclador X aceitou o teu pedido”
+* “Nova recolha disponível perto de ti”
+* “Ganhaste 50 pontos!”
+* “Tua recolha foi concluída”
+
+
+8. Sistema de Pagamentos e Transações
+
+Permitir:
+
+* converter pontos em dinheiro
+* transferir entre utilizadores
+* fazer pagamentos internos (ex.: loja de produtos sustentáveis)
+
+
+9. Loja Interna (Marketplace Verde)
+
+Com os pontos, o utilizador pode comprar:
+
+* sacos reutilizáveis
+* garrafas eco-friendly
+* materiais reciclados
+* serviços parceiros
+
+Isto torna o ecossistema completo.
+
+
+10. Gamificação
+
+Para tornar o sistema motivador:
+
+* níveis (Bronze, Prata, Ouro, Diamante)
+* medalhas (ex.: “Reciclador do Mês”)
+* ranking local (quem recicla mais)
+
+
+11. Segurança e Validação
+
+* login seguro
+* dados protegidos
+* verificação de contas
+* controlo de fraudes (ex.: fotos obrigatórias)
+
+
+12. Backend Robusto e Escalável
+
+Com suporte a:
+
+* acessos simultâneos
+* transações
+* mapas
+* notificações
+* algoritmos de pontos
+
+
+13. Painel Administrativo
+
+Para a equipa de gestão:
+
+* visão geral do sistema
+* monitorar pedidos
+* aprovar recicladores
+* gerenciar recompensas
+* ver estatísticas gerais
+
+
+14. Expansão Futura com Inteligência Artificial
+
+No futuro terá IA para:
+
+* prever melhores horários de recolha
+* prever zonas com maior produção de resíduos
+* sugerir rotas mais lucrativas
+* detectar possíveis fraudes
+* analisar padrões de reciclagem
+
+
+Resumo do projeto:
+
+“O ReCicla+ Angola é uma plataforma digital que conecta quem produz resíduos recicláveis aos recicladores, utilizando geolocalização, gamificação, incentivos financeiros e um sistema de recolha inteligente. A aplicação facilita a separação, recolha e valorização dos resíduos, ao mesmo tempo que estimula hábitos sustentáveis através de pontos, recompensas e pagamentos digitais. É uma solução moderna que promove a economia circular, aumenta o rendimento dos recicladores e transforma a reciclagem numa atividade acessível, lucrativa e motivadora.”
