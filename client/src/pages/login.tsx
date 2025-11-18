@@ -12,7 +12,7 @@ import { loginSchema, type LoginData } from "@shared/schema";
 import { ArrowLeft } from "lucide-react";
 import logoIcon from "@assets/generated_images/ReCicla+_app_logo_icon_c8ba0c8a.png";
 import heroImg from "@assets/generated_images/Hero_background_environmental_impact_b855236c.png";
-import loginBgImg from "@assets/stock_images/clean_environment_na_cab6887e.jpg";
+import loginBgImg from "@assets/stock_images/recycling_sustainabi_076cfd4e.jpg";
 
 export default function Login() {
   const [, setLocation] = useLocation();
