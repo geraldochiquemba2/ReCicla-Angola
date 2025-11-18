@@ -120,6 +120,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Platform stats (public)
+  app.get("/api/platform/stats", async (req, res) => {
+    try {
+      const users = await storage.getAllUsers();
+      const collections = await storage.getAllCollections();
+      
+      let totalKgRecycled = 0;
+      collections.forEach(collection => {
+        if (collection.status === "concluido") {
+          totalKgRecycled += parseFloat(collection.quantity);
+        }
+      });
+
+      res.json({
+        totalUsers: users.length,
+        totalKgRecycled: totalKgRecycled,
+        totalCollections: collections.length,
+      });
+    } catch (error) {
+      res.status(500).json({ message: "Erro ao buscar estatísticas" });
+    }
+  });
+
   // Stats route
   app.get("/api/stats", requireAuth, async (req, res) => {
     try {

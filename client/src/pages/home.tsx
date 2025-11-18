@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
+import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Recycle, Users, Award, MapPin, TrendingUp, Leaf } from "lucide-react";
@@ -32,10 +33,21 @@ const heroImages = [
   heroImage8,
 ];
 
+interface PlatformStats {
+  totalUsers: number;
+  totalKgRecycled: number;
+  totalCollections: number;
+}
+
 export default function Home() {
   const [, setLocation] = useLocation();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isScrolled, setIsScrolled] = useState(false);
+
+  const { data: stats } = useQuery<PlatformStats>({
+    queryKey: ["/api/platform/stats"],
+    retry: false,
+  });
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -135,19 +147,23 @@ export default function Home() {
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-20 max-w-4xl mx-auto">
             <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-white mb-2">10k+</div>
-              <div className="text-white/80">Usuários Ativos</div>
+              <div className="text-3xl md:text-4xl font-bold text-white mb-2">{stats?.totalUsers || 0}</div>
+              <div className="text-white/80">Usuários</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-white mb-2">50k+</div>
-              <div className="text-white/80">Kg Reciclados</div>
+              <div className="text-3xl md:text-4xl font-bold text-white mb-2">
+                {stats ? Math.round(stats.totalKgRecycled) : 0} kg
+              </div>
+              <div className="text-white/80">Reciclados</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-white mb-2">500+</div>
-              <div className="text-white/80">Recolhas Diárias</div>
+              <div className="text-3xl md:text-4xl font-bold text-white mb-2">
+                {stats?.totalCollections || 0}
+              </div>
+              <div className="text-white/80">Recolhas</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-white mb-2">18</div>
+              <div className="text-3xl md:text-4xl font-bold text-white mb-2">21</div>
               <div className="text-white/80">Províncias</div>
             </div>
           </div>
@@ -371,7 +387,7 @@ export default function Home() {
             <Button
               size="lg"
               onClick={() => setLocation("/register")}
-              className="text-lg px-8 py-6 h-auto bg-white/20 backdrop-blur-md border border-white/30 text-white hover:bg-white/30"
+              className="bg-white/20 backdrop-blur-md border border-white/30 text-white hover:bg-white/30"
               data-testid="button-cta-register"
             >
               Criar Conta Grátis
@@ -379,7 +395,7 @@ export default function Home() {
             <Button
               size="lg"
               onClick={() => setLocation("/login")}
-              className="text-lg px-8 py-6 h-auto bg-white/10 backdrop-blur-md border border-white/30 text-white hover:bg-white/20"
+              className="bg-white/10 backdrop-blur-md border border-white/30 text-white hover:bg-white/20"
               data-testid="button-cta-login"
             >
               Entrar
