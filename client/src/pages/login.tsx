@@ -9,8 +9,7 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/lib/auth";
 import { loginSchema, type LoginData } from "@shared/schema";
-import { ArrowLeft } from "lucide-react";
-import logoIcon from "@assets/generated_images/ReCicla+_app_logo_icon_c8ba0c8a.png";
+import { ArrowLeft, Recycle } from "lucide-react";
 import heroImg from "@assets/generated_images/Hero_background_environmental_impact_b855236c.png";
 import loginBgImg from "@assets/stock_images/recycling_sustainabi_076cfd4e.jpg";
 
@@ -99,7 +98,7 @@ export default function Login() {
         </div>
         <div className="relative z-10 flex flex-col justify-center px-12 py-12">
           <div className="flex items-center gap-3 mb-8">
-            <img src={logoIcon} alt="ReCicla+" className="h-12 w-12" />
+            <Recycle className="h-12 w-12 text-primary" />
             <h1 className="text-3xl font-bold">
               ReCicla<span className="text-primary">+</span> Angola
             </h1>
@@ -136,7 +135,7 @@ export default function Login() {
         <Card className="w-full max-w-md border-none shadow-none lg:border lg:shadow-lg relative z-10 bg-background/40 backdrop-blur-xl">
           <CardHeader className="space-y-1">
             <div className="flex items-center gap-2 mb-4 lg:hidden">
-              <img src={logoIcon} alt="ReCicla+" className="h-8 w-8" />
+              <Recycle className="h-8 w-8 text-primary" />
               <span className="text-xl font-bold">
                 ReCicla<span className="text-primary">+</span>
               </span>
@@ -201,8 +200,8 @@ export default function Login() {
             <div className="mt-6 text-center text-sm">
               <span className="text-muted-foreground">Não tem uma conta? </span>
               <Button
-                variant="link"
-                className="p-0 h-auto font-semibold"
+                variant="ghost"
+                className="p-0 h-auto font-semibold text-primary"
                 onClick={() => setLocation("/register")}
                 data-testid="link-register"
               >

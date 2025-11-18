@@ -11,6 +11,7 @@ import {
   Map,
   Award,
   Plus,
+  Recycle,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -19,7 +20,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import logoIcon from "@assets/generated_images/ReCicla+_app_logo_icon_c8ba0c8a.png";
 
 export function Header() {
   const { user, logout, isAuthenticated } = useAuth();
@@ -38,7 +38,7 @@ export function Header() {
               className="flex items-center gap-2 transition-transform hover:scale-105"
               data-testid="link-home"
             >
-              <img src={logoIcon} alt="ReCicla+" className="h-8 w-8" />
+              <Recycle className="h-8 w-8 text-primary" />
               <span className="hidden font-bold text-lg tracking-tight md:inline-block">
                 ReCicla<span className="text-primary">+</span> Angola
               </span>
