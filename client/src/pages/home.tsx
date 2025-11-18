@@ -257,58 +257,49 @@ export default function Home() {
 
       <section className="py-20 bg-background">
         <div className="container mx-auto px-4 max-w-7xl">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="order-2 lg:order-1 relative rounded-xl overflow-hidden">
-              <img
-                src={communityImage}
-                alt="Recicladores profissionais"
-                className="w-full h-[500px] object-cover"
-              />
-            </div>
-            <div className="order-1 lg:order-2">
-              <h2 className="text-4xl md:text-5xl font-bold mb-6">
-                Para Recicladores
-              </h2>
-              <p className="text-lg text-muted-foreground mb-8">
-                Encontre oportunidades de recolha próximas, otimize suas rotas e aumente sua receita. Nossa plataforma conecta você diretamente com quem tem resíduos para reciclar.
-              </p>
-              <ul className="space-y-4 mb-8">
-                <li className="flex items-start gap-3">
-                  <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary/10 mt-0.5">
-                    <MapPin className="h-4 w-4 text-primary" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold mb-1">Encontre Recolhas Próximas</h4>
-                    <p className="text-muted-foreground">Veja pedidos na sua área em tempo real</p>
-                  </div>
-                </li>
-                <li className="flex items-start gap-3">
-                  <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary/10 mt-0.5">
-                    <TrendingUp className="h-4 w-4 text-primary" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold mb-1">Aumente sua Receita</h4>
-                    <p className="text-muted-foreground">Mais recolhas, mais lucro</p>
-                  </div>
-                </li>
-                <li className="flex items-start gap-3">
-                  <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary/10 mt-0.5">
-                    <Users className="h-4 w-4 text-primary" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold mb-1">Comunidade Ativa</h4>
-                    <p className="text-muted-foreground">Conecte-se com milhares de geradores</p>
-                  </div>
-                </li>
-              </ul>
-              <Button
-                size="lg"
-                onClick={() => setLocation("/register")}
-                data-testid="button-recycler-register"
-              >
-                Começar como Reciclador
-              </Button>
-            </div>
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+              Para Recicladores
+            </h2>
+            <p className="text-lg text-muted-foreground mb-8">
+              Encontre oportunidades de recolha próximas, otimize suas rotas e aumente sua receita. Nossa plataforma conecta você diretamente com quem tem resíduos para reciclar.
+            </p>
+            <ul className="space-y-4 mb-8">
+              <li className="flex items-start gap-3">
+                <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary/10 mt-0.5">
+                  <MapPin className="h-4 w-4 text-primary" />
+                </div>
+                <div>
+                  <h4 className="font-semibold mb-1">Encontre Recolhas Próximas</h4>
+                  <p className="text-muted-foreground">Veja pedidos na sua área em tempo real</p>
+                </div>
+              </li>
+              <li className="flex items-start gap-3">
+                <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary/10 mt-0.5">
+                  <TrendingUp className="h-4 w-4 text-primary" />
+                </div>
+                <div>
+                  <h4 className="font-semibold mb-1">Aumente sua Receita</h4>
+                  <p className="text-muted-foreground">Mais recolhas, mais lucro</p>
+                </div>
+              </li>
+              <li className="flex items-start gap-3">
+                <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary/10 mt-0.5">
+                  <Users className="h-4 w-4 text-primary" />
+                </div>
+                <div>
+                  <h4 className="font-semibold mb-1">Comunidade Ativa</h4>
+                  <p className="text-muted-foreground">Conecte-se com milhares de geradores</p>
+                </div>
+              </li>
+            </ul>
+            <Button
+              size="lg"
+              onClick={() => setLocation("/register")}
+              data-testid="button-recycler-register"
+            >
+              Começar como Reciclador
+            </Button>
           </div>
         </div>
       </section>
