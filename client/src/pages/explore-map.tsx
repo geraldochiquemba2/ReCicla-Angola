@@ -5,22 +5,52 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import type { CollectionWithUsers } from "@shared/schema";
 import { ArrowLeft, Filter, MapPin } from "lucide-react";
 import { getWasteTypeLabel } from "@/components/waste-type-icon";
-import { useState } from "react";
+import { getProvinces, getMunicipalities } from "@shared/angola-locations";
+import { useState, useEffect } from "react";
 
 export default function ExploreMap() {
   const [, setLocation] = useLocation();
   const [selectedStatus, setSelectedStatus] = useState<string>("all");
+  const [selectedProvince, setSelectedProvince] = useState<string>("");
+  const [selectedMunicipality, setSelectedMunicipality] = useState<string>("");
+  const [municipalities, setMunicipalities] = useState<string[]>([]);
 
   const { data: collections = [], isLoading } = useQuery<CollectionWithUsers[]>({
     queryKey: ["/api/collections"],
   });
 
+  useEffect(() => {
+    if (selectedProvince) {
+      const munis = getMunicipalities(selectedProvince);
+      setMunicipalities(munis);
+      setSelectedMunicipality("");
+    } else {
+      setMunicipalities([]);
+      setSelectedMunicipality("");
+    }
+  }, [selectedProvince]);
+
   const filteredCollections = collections.filter(collection => {
-    if (selectedStatus === "all") return true;
-    return collection.status === selectedStatus;
+    // Filter by status
+    if (selectedStatus !== "all" && collection.status !== selectedStatus) {
+      return false;
+    }
+    
+    // Filter by province
+    if (selectedProvince && !collection.address?.includes(selectedProvince)) {
+      return false;
+    }
+    
+    // Filter by municipality
+    if (selectedMunicipality && !collection.address?.includes(selectedMunicipality)) {
+      return false;
+    }
+    
+    return true;
   });
 
   const availableCount = collections.filter(c => c.status === "disponivel").length;
@@ -86,33 +116,89 @@ export default function ExploreMap() {
                     <h3 className="font-semibold">Filtros</h3>
                   </div>
                   
-                  <div className="space-y-2">
-                    <Button
-                      variant={selectedStatus === "all" ? "default" : "outline"}
-                      className="w-full justify-start"
-                      onClick={() => setSelectedStatus("all")}
-                      data-testid="filter-all"
-                    >
-                      Todas ({collections.length})
-                    </Button>
-                    <Button
-                      variant={selectedStatus === "disponivel" ? "default" : "outline"}
-                      className="w-full justify-start"
-                      onClick={() => setSelectedStatus("disponivel")}
-                      data-testid="filter-available"
-                    >
-                      <div className="w-3 h-3 rounded-full bg-green-500 mr-2" />
-                      Disponíveis ({availableCount})
-                    </Button>
-                    <Button
-                      variant={selectedStatus === "aceito" ? "default" : "outline"}
-                      className="w-full justify-start"
-                      onClick={() => setSelectedStatus("aceito")}
-                      data-testid="filter-accepted"
-                    >
-                      <div className="w-3 h-3 rounded-full bg-orange-500 mr-2" />
-                      Aceitos ({collections.filter(c => c.status === "aceito").length})
-                    </Button>
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">Status</label>
+                      <div className="space-y-2">
+                        <Button
+                          variant={selectedStatus === "all" ? "default" : "outline"}
+                          className="w-full justify-start"
+                          onClick={() => setSelectedStatus("all")}
+                          data-testid="filter-all"
+                        >
+                          Todas ({collections.length})
+                        </Button>
+                        <Button
+                          variant={selectedStatus === "disponivel" ? "default" : "outline"}
+                          className="w-full justify-start"
+                          onClick={() => setSelectedStatus("disponivel")}
+                          data-testid="filter-available"
+                        >
+                          <div className="w-3 h-3 rounded-full bg-green-500 mr-2" />
+                          Disponíveis ({availableCount})
+                        </Button>
+                        <Button
+                          variant={selectedStatus === "aceito" ? "default" : "outline"}
+                          className="w-full justify-start"
+                          onClick={() => setSelectedStatus("aceito")}
+                          data-testid="filter-accepted"
+                        >
+                          <div className="w-3 h-3 rounded-full bg-orange-500 mr-2" />
+                          Aceitos ({collections.filter(c => c.status === "aceito").length})
+                        </Button>
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">Província</label>
+                      <Select value={selectedProvince} onValueChange={setSelectedProvince}>
+                        <SelectTrigger data-testid="select-province-filter">
+                          <SelectValue placeholder="Todas as províncias" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="">Todas as províncias</SelectItem>
+                          {getProvinces().map((province) => (
+                            <SelectItem key={province} value={province}>
+                              {province}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    {selectedProvince && (
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium">Município</label>
+                        <Select value={selectedMunicipality} onValueChange={setSelectedMunicipality}>
+                          <SelectTrigger data-testid="select-municipality-filter">
+                            <SelectValue placeholder="Todos os municípios" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="">Todos os municípios</SelectItem>
+                            {municipalities.map((municipality) => (
+                              <SelectItem key={municipality} value={municipality}>
+                                {municipality}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    )}
+
+                    {(selectedProvince || selectedMunicipality || selectedStatus !== "all") && (
+                      <Button
+                        variant="outline"
+                        className="w-full"
+                        onClick={() => {
+                          setSelectedProvince("");
+                          setSelectedMunicipality("");
+                          setSelectedStatus("all");
+                        }}
+                        data-testid="button-clear-filters"
+                      >
+                        Limpar Filtros
+                      </Button>
+                    )}
                   </div>
                 </CardContent>
               </Card>
