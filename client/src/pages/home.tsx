@@ -333,7 +333,7 @@ export default function Home() {
               <Button
                 size="lg"
                 variant="outline"
-                onClick={() => setLocation("/collections")}
+                onClick={() => setLocation("/explore-map")}
                 data-testid="button-explore-map"
               >
                 <MapPin className="h-5 w-5 mr-2" />

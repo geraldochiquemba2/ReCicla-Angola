@@ -13,6 +13,7 @@ import Dashboard from "@/pages/dashboard";
 import Profile from "@/pages/profile";
 import NewCollection from "@/pages/new-collection";
 import Collections from "@/pages/collections";
+import ExploreMap from "@/pages/explore-map";
 import NotFound from "@/pages/not-found";
 
 function ProtectedRoute({ component: Component }: { component: React.ComponentType }) {
@@ -56,6 +57,7 @@ function Router() {
       <Route path="/collections">
         <ProtectedRoute component={Collections} />
       </Route>
+      <Route path="/explore-map" component={ExploreMap} />
       <Route path="/">
         <PublicRoute component={Home} />
       </Route>
