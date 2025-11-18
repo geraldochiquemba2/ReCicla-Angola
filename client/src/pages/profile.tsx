@@ -215,7 +215,7 @@ export default function Profile() {
         <main className="container mx-auto px-4 py-8 max-w-7xl">
         {/* Profile Header */}
         <div className="mb-8">
-          <Card>
+          <Card className="bg-card/80 backdrop-blur-sm">
             <CardContent className="p-8">
               <div className="flex justify-end mb-2">
                 <EditProfileDialog user={user} />
@@ -308,7 +308,7 @@ export default function Profile() {
         </div>
 
         {/* Environmental Impact */}
-        <Card className="mb-8">
+        <Card className="mb-8 bg-card/80 backdrop-blur-sm">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Leaf className="h-5 w-5 text-primary" />
@@ -367,7 +367,7 @@ export default function Profile() {
 
         {/* Tabs Section */}
         <Tabs defaultValue="collections" className="space-y-6">
-          <TabsList className="grid w-full max-w-md grid-cols-2">
+          <TabsList className="grid w-full max-w-md grid-cols-2 bg-card/80 backdrop-blur-sm">
             <TabsTrigger value="collections" data-testid="tab-collections">
               Recolhas
             </TabsTrigger>
@@ -390,7 +390,7 @@ export default function Profile() {
                 ))}
               </div>
             ) : (
-              <Card>
+              <Card className="bg-card/80 backdrop-blur-sm">
                 <CardContent className="p-12">
                   <div className="text-center">
                     <Package className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
@@ -407,7 +407,7 @@ export default function Profile() {
           </TabsContent>
 
           <TabsContent value="history" className="space-y-4">
-            <Card>
+            <Card className="bg-card/80 backdrop-blur-sm">
               <CardHeader>
                 <CardTitle>Histórico de Transações</CardTitle>
               </CardHeader>

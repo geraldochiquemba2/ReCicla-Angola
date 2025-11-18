@@ -15,7 +15,7 @@ interface StatsCardProps {
 
 export function StatsCard({ title, value, subtitle, icon: Icon, trend, backgroundImage }: StatsCardProps) {
   return (
-    <Card className="hover-elevate transition-all duration-300 overflow-hidden relative">
+    <Card className="hover-elevate transition-all duration-300 overflow-hidden relative bg-card/80 backdrop-blur-sm">
       {backgroundImage && (
         <div 
           className="absolute inset-0 bg-cover bg-center opacity-40"
