@@ -18,12 +18,12 @@ export type TransactionType = "ganho_recolha" | "ganho_disponibilizacao" | "gast
 // Tabela de Utilizadores
 export const users = pgTable("users", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  username: text("username").notNull().unique(),
+  username: text("username"),
   password: text("password").notNull(),
   userType: text("user_type").notNull().$type<UserType>(),
   fullName: text("full_name").notNull(),
-  email: text("email").notNull().unique(),
-  phone: text("phone"),
+  email: text("email"),
+  phone: text("phone").notNull().unique(),
   address: text("address"),
   latitude: decimal("latitude", { precision: 10, scale: 8 }),
   longitude: decimal("longitude", { precision: 11, scale: 8 }),
@@ -64,12 +64,12 @@ export const pointTransactions = pgTable("point_transactions", {
 
 // Schemas de inserção
 export const insertUserSchema = createInsertSchema(users, {
-  email: z.string().email("Email inválido"),
-  username: z.string().min(3, "Nome de utilizador deve ter pelo menos 3 caracteres"),
+  email: z.string().optional(),
+  username: z.string().optional(),
   password: z.string().min(6, "Senha deve ter pelo menos 6 caracteres"),
   fullName: z.string().min(3, "Nome completo deve ter pelo menos 3 caracteres"),
   userType: z.enum(["gerador", "reciclador"]),
-  phone: z.string().optional(),
+  phone: z.string().min(9, "Número de telefone inválido").regex(/^[+\d\s()-]+$/, "Formato de telefone inválido"),
   address: z.string().optional(),
   latitude: z.string().optional(),
   longitude: z.string().optional(),
@@ -120,7 +120,7 @@ export type InsertPointTransaction = z.infer<typeof insertPointTransactionSchema
 
 // Schema de login
 export const loginSchema = z.object({
-  username: z.string().min(1, "Nome de utilizador é obrigatório"),
+  phone: z.string().min(1, "Número de telefone é obrigatório"),
   password: z.string().min(1, "Senha é obrigatória"),
 });
 

@@ -73,15 +73,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const data = insertUserSchema.parse(req.body);
 
-      // Check if username or email already exists
-      const existingUsername = await storage.getUserByUsername(data.username);
-      if (existingUsername) {
-        return res.status(400).json({ message: "Nome de utilizador já existe" });
-      }
-
-      const existingEmail = await storage.getUserByEmail(data.email);
-      if (existingEmail) {
-        return res.status(400).json({ message: "Email já está registado" });
+      // Check if phone already exists
+      const existingPhone = await storage.getUserByPhone(data.phone);
+      if (existingPhone) {
+        return res.status(400).json({ message: "Número de telefone já está registado" });
       }
 
       // Hash password before storing
@@ -102,7 +97,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const data = loginSchema.parse(req.body);
 
-      const user = await storage.getUserByUsername(data.username);
+      const user = await storage.getUserByPhone(data.phone);
       if (!user) {
         return res.status(401).json({ message: "Credenciais inválidas" });
       }
