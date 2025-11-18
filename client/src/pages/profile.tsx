@@ -29,6 +29,7 @@ import { useToast } from "@/hooks/use-toast";
 function EditProfileDialog({ user }: { user: any }) {
   const [open, setOpen] = useState(false);
   const { toast } = useToast();
+  const { updateUser } = useAuth();
 
   const form = useForm<UpdateProfile>({
     resolver: zodResolver(updateProfileSchema),
@@ -46,8 +47,8 @@ function EditProfileDialog({ user }: { user: any }) {
       const res = await apiRequest("PUT", "/api/user/profile", data);
       return await res.json();
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/user"] });
+    onSuccess: (response) => {
+      updateUser(response.user);
       toast({
         title: "Perfil atualizado",
         description: "As suas informações foram atualizadas com sucesso",
