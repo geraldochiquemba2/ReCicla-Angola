@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/lib/auth";
 import type { CollectionWithUsers, UserStats } from "@shared/schema";
-import { Package, Leaf, Award, TrendingUp, Plus, ArrowRight } from "lucide-react";
+import { Package, Leaf, Award, TrendingUp, ArrowRight } from "lucide-react";
 import statsBackground1 from "@assets/stock_images/recycling_bins_waste_b9da8572.jpg";
 import statsBackground2 from "@assets/stock_images/recycling_bins_waste_29917863.jpg";
 import statsBackground3 from "@assets/stock_images/recycling_bins_waste_d7189b05.jpg";
@@ -145,20 +145,6 @@ export default function Dashboard() {
                 <CollectionCard key={collection.id} collection={collection} />
               ))}
             </div>
-          </div>
-        )}
-
-        {/* Quick Action for Geradores */}
-        {user?.userType === "gerador" && collections.length === 0 && (
-          <div className="mt-8 p-8 bg-primary/10 rounded-xl text-center">
-            <h3 className="text-xl font-bold mb-2">Pronto para começar?</h3>
-            <p className="text-muted-foreground mb-4">
-              Crie seu primeiro pedido de recolha e ganhe pontos!
-            </p>
-            <Button onClick={() => setLocation("/new-collection")} data-testid="button-create-first">
-              <Plus className="h-4 w-4 mr-2" />
-              Criar Primeira Recolha
-            </Button>
           </div>
         )}
       </main>
