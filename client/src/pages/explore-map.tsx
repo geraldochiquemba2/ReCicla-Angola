@@ -156,7 +156,7 @@ export default function ExploreMap() {
                           <SelectTrigger data-testid="select-province-filter">
                             <SelectValue placeholder="Todas as províncias" />
                           </SelectTrigger>
-                          <SelectContent>
+                          <SelectContent className="max-h-[300px]">
                             {getProvinces().map((province) => (
                               <SelectItem key={province} value={province}>
                                 {province}
@@ -185,7 +185,7 @@ export default function ExploreMap() {
                             <SelectTrigger data-testid="select-municipality-filter">
                               <SelectValue placeholder="Todos os municípios" />
                             </SelectTrigger>
-                            <SelectContent>
+                            <SelectContent className="max-h-[300px]">
                               {municipalities.map((municipality) => (
                                 <SelectItem key={municipality} value={municipality}>
                                   {municipality}
