@@ -147,38 +147,40 @@ export default function Collections() {
         </div>
 
         <Tabs value={selectedTab} onValueChange={setSelectedTab} className="space-y-6">
-          <TabsList>
-            <TabsTrigger value="all" data-testid="tab-all">
-              Todas
-              <Badge variant="secondary" className="ml-2">
-                {getTabCount("all")}
-              </Badge>
-            </TabsTrigger>
-            <TabsTrigger value="disponivel" data-testid="tab-available">
-              Disponíveis
-              <Badge variant="secondary" className="ml-2">
-                {getTabCount("disponivel")}
-              </Badge>
-            </TabsTrigger>
-            <TabsTrigger value="aceito" data-testid="tab-accepted">
-              Aceitas
-              <Badge variant="secondary" className="ml-2">
-                {getTabCount("aceito")}
-              </Badge>
-            </TabsTrigger>
-            <TabsTrigger value="concluido" data-testid="tab-completed">
-              Concluídas
-              <Badge variant="secondary" className="ml-2">
-                {getTabCount("concluido")}
-              </Badge>
-            </TabsTrigger>
-            <TabsTrigger value="mine" data-testid="tab-mine">
-              Minhas
-              <Badge variant="secondary" className="ml-2">
-                {getTabCount("mine")}
-              </Badge>
-            </TabsTrigger>
-          </TabsList>
+          <div className="w-full overflow-x-auto">
+            <TabsList className="w-full sm:w-auto inline-flex">
+              <TabsTrigger value="all" data-testid="tab-all" className="flex-shrink-0">
+                Todas
+                <Badge variant="secondary" className="ml-2">
+                  {getTabCount("all")}
+                </Badge>
+              </TabsTrigger>
+              <TabsTrigger value="disponivel" data-testid="tab-available" className="flex-shrink-0">
+                Disponíveis
+                <Badge variant="secondary" className="ml-2">
+                  {getTabCount("disponivel")}
+                </Badge>
+              </TabsTrigger>
+              <TabsTrigger value="aceito" data-testid="tab-accepted" className="flex-shrink-0">
+                Aceitas
+                <Badge variant="secondary" className="ml-2">
+                  {getTabCount("aceito")}
+                </Badge>
+              </TabsTrigger>
+              <TabsTrigger value="concluido" data-testid="tab-completed" className="flex-shrink-0">
+                Concluídas
+                <Badge variant="secondary" className="ml-2">
+                  {getTabCount("concluido")}
+                </Badge>
+              </TabsTrigger>
+              <TabsTrigger value="mine" data-testid="tab-mine" className="flex-shrink-0">
+                Minhas
+                <Badge variant="secondary" className="ml-2">
+                  {getTabCount("mine")}
+                </Badge>
+              </TabsTrigger>
+            </TabsList>
+          </div>
 
           <TabsContent value={selectedTab}>
             {isLoading ? (
