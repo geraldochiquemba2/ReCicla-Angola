@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/lib/theme-provider";
 import { AuthProvider, useAuth } from "@/lib/auth";
 
+import Home from "@/pages/home";
 import Login from "@/pages/login";
 import Register from "@/pages/register";
 import Dashboard from "@/pages/dashboard";
@@ -56,10 +57,7 @@ function Router() {
         <ProtectedRoute component={Collections} />
       </Route>
       <Route path="/">
-        {() => {
-          const { isAuthenticated } = useAuth();
-          return <Redirect to={isAuthenticated ? "/dashboard" : "/login"} />;
-        }}
+        <PublicRoute component={Home} />
       </Route>
       <Route component={NotFound} />
     </Switch>
