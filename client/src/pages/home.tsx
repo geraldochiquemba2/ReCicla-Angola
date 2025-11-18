@@ -18,7 +18,7 @@ import cardImage2 from "@assets/stock_images/people_working_toget_e1e22104.jpg";
 import cardImage3 from "@assets/stock_images/rewards_prizes_money_5dfcdf13.jpg";
 import generatorBgImage from "@assets/stock_images/person_sorting_recyc_c62d4a9b.jpg";
 import ctaBackgroundImage from "@assets/stock_images/recycling_sustainabi_076cfd4e.jpg";
-import recyclerBgImage from "@assets/stock_images/recycling_workers_co_8e8551af.jpg";
+import recyclerBgImage from "@assets/pexels-peaky-34418452_1763478228644.jpg";
 
 const heroImages = [
   heroImage1,
