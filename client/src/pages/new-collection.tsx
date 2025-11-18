@@ -384,7 +384,7 @@ export default function NewCollection() {
                       </FormLabel>
                       
                       {!photoPreview ? (
-                        <div className="border-2 border-dashed rounded-lg p-8 text-center hover-elevate active-elevate-2 cursor-pointer">
+                        <div>
                           <input
                             type="file"
                             accept="image/*"
@@ -393,7 +393,10 @@ export default function NewCollection() {
                             id="photo-upload"
                             data-testid="input-photo-upload"
                           />
-                          <label htmlFor="photo-upload" className="cursor-pointer">
+                          <label 
+                            htmlFor="photo-upload" 
+                            className="block border-2 border-dashed rounded-lg p-8 text-center hover-elevate active-elevate-2 cursor-pointer"
+                          >
                             <Upload className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
                             <p className="text-sm text-muted-foreground mb-2">
                               Clique para fazer upload de uma foto
