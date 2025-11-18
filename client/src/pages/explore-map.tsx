@@ -14,6 +14,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useAuth } from "@/lib/auth";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest, queryClient } from "@/lib/queryClient";
+import exploreMapBgImage from "@assets/pexels-pixabay-417328_1763480764126.jpg";
 
 export default function ExploreMap() {
   const [, setLocation] = useLocation();
@@ -30,9 +31,7 @@ export default function ExploreMap() {
 
   const acceptMutation = useMutation({
     mutationFn: async (collectionId: string) => {
-      return await apiRequest(`/api/collections/${collectionId}/accept`, {
-        method: "POST",
-      });
+      return await apiRequest("POST", `/api/collections/${collectionId}/accept`);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/collections"] });
@@ -109,13 +108,20 @@ export default function ExploreMap() {
   }, [isAuthenticated, user, acceptMutation, toast, setLocation]);
 
   return (
-    <div className="min-h-screen bg-background">
-      <header className="fixed top-0 w-full bg-background/80 backdrop-blur-md border-b z-[9999]">
+    <div className="min-h-screen relative">
+      <div 
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: `url(${exploreMapBgImage})` }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/50 to-black/60" />
+      
+      <header className="fixed top-0 w-full bg-black/40 backdrop-blur-md border-b border-white/10 z-[9999]">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between max-w-7xl">
           <Button
             variant="ghost"
             onClick={() => setLocation("/")}
             data-testid="button-back"
+            className="text-white hover:bg-white/10"
           >
             <ArrowLeft className="h-5 w-5 mr-2" />
             Voltar
@@ -123,13 +129,13 @@ export default function ExploreMap() {
         </div>
       </header>
 
-      <main className="pt-20">
+      <main className="pt-20 relative z-10">
         <div className="container mx-auto px-4 py-8 max-w-7xl">
           <div className="mb-8">
-            <h1 className="text-4xl font-bold mb-2" data-testid="text-title">
+            <h1 className="text-4xl font-bold mb-2 text-white" data-testid="text-title">
               Explorar Mapa de Recolhas
             </h1>
-            <p className="text-muted-foreground">
+            <p className="text-white/90">
               Veja todos os pontos de recolha disponíveis em Angola
             </p>
           </div>
@@ -325,19 +331,19 @@ export default function ExploreMap() {
           </div>
 
           <div className="mt-12 text-center">
-            <Card className="bg-primary text-primary-foreground">
+            <Card className="bg-black/60 backdrop-blur-md border-white/10">
               <CardContent className="p-8">
-                <h2 className="text-2xl font-bold mb-4">
+                <h2 className="text-2xl font-bold mb-4 text-white">
                   Quer publicar ou recolher resíduos?
                 </h2>
-                <p className="mb-6 opacity-90">
+                <p className="mb-6 text-white/90">
                   Crie sua conta gratuitamente e comece a contribuir para um Angola mais sustentável
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Button
                     size="lg"
-                    variant="secondary"
                     onClick={() => setLocation("/register")}
+                    className="bg-white/20 backdrop-blur-md border border-white/30 text-white hover:bg-white/30"
                     data-testid="button-cta-register"
                   >
                     Criar Conta Grátis
@@ -346,7 +352,7 @@ export default function ExploreMap() {
                     size="lg"
                     variant="outline"
                     onClick={() => setLocation("/login")}
-                    className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10"
+                    className="border-white/30 text-white hover:bg-white/10"
                     data-testid="button-cta-login"
                   >
                     Já tenho conta
