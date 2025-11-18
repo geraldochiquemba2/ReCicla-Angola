@@ -141,19 +141,19 @@ export default function ExploreMap() {
           </div>
 
           <div className="flex flex-col lg:flex-row gap-6">
-            <div className="lg:w-2/3">
+            <div className="lg:w-1/2">
               {isLoading ? (
-                <Skeleton className="h-[600px] w-full rounded-xl" />
+                <Skeleton className="h-[400px] w-full rounded-xl" />
               ) : (
                 <MapView
                   collections={filteredCollections}
                   onAcceptClick={handleAcceptCollection}
-                  className="h-[600px] w-full rounded-xl shadow-lg border"
+                  className="h-[400px] w-full rounded-xl shadow-lg border"
                 />
               )}
             </div>
 
-            <div className="lg:w-1/3 space-y-4">
+            <div className="lg:w-1/2 space-y-4">
               <Card>
                 <CardContent className="p-6">
                   <div className="flex items-center gap-2 mb-4">
