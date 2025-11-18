@@ -14,6 +14,7 @@ import statsBackground1 from "@assets/stock_images/recycling_bins_waste_b9da8572
 import statsBackground2 from "@assets/stock_images/recycling_bins_waste_29917863.jpg";
 import statsBackground3 from "@assets/stock_images/recycling_bins_waste_d7189b05.jpg";
 import statsBackground4 from "@assets/stock_images/recycling_bins_waste_dfcca984.jpg";
+import dashboardBackground from "@assets/pexels-singkham-178541-1108572_1763479730976.jpg";
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -33,10 +34,17 @@ export default function Dashboard() {
   const recentCollections = collections.slice(0, 3);
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
+    <div className="min-h-screen relative">
+      <div 
+        className="fixed inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url(${dashboardBackground})` }}
+      />
+      <div className="fixed inset-0 bg-background/90 dark:bg-background/95" />
+      
+      <div className="relative z-10">
+        <Header />
 
-      <main className="container mx-auto px-4 py-8 max-w-7xl">
+        <main className="container mx-auto px-4 py-8 max-w-7xl">
         {/* Welcome Section */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2" data-testid="text-welcome">
@@ -147,7 +155,8 @@ export default function Dashboard() {
             </div>
           </div>
         )}
-      </main>
+        </main>
+      </div>
     </div>
   );
 }
