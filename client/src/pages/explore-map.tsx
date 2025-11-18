@@ -141,7 +141,7 @@ export default function ExploreMap() {
           </div>
 
           <div className="flex flex-col lg:flex-row gap-6">
-            <div className="lg:w-1/2">
+            <div className="lg:w-5/12">
               {isLoading ? (
                 <Skeleton className="h-[400px] w-full rounded-xl" />
               ) : (
@@ -153,7 +153,7 @@ export default function ExploreMap() {
               )}
             </div>
 
-            <div className="lg:w-1/2 space-y-4">
+            <div className="lg:w-7/12 space-y-4">
               <Card>
                 <CardContent className="p-6">
                   <div className="flex items-center gap-2 mb-4">
