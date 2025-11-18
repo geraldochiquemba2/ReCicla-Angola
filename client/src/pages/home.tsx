@@ -3,7 +3,7 @@ import { useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Recycle, Users, Award, MapPin, TrendingUp, Leaf } from "lucide-react";
+import { Recycle, Users, Award, MapPin, TrendingUp, Leaf, Menu, X } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import heroVideo1 from "@assets/6591442-hd_1366_720_25fps_1763479368534.mp4";
 import heroVideo2 from "@assets/13612268_1280_720_25fps_1763479368535.mp4";
@@ -34,6 +34,7 @@ export default function Home() {
   const [, setLocation] = useLocation();
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { isAuthenticated } = useAuth();
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
@@ -98,16 +99,17 @@ export default function Home() {
       }`}>
         <div className="container mx-auto px-4 py-4 flex items-center justify-between max-w-7xl">
           <div className="flex items-center gap-2">
-            <Recycle className={`h-8 w-8 transition-colors duration-300 ${
+            <Recycle className={`h-6 w-6 sm:h-8 sm:w-8 transition-colors duration-300 ${
               isScrolled ? "text-primary" : "text-white"
             }`} />
-            <h1 className={`text-2xl font-bold transition-colors duration-300 ${
+            <h1 className={`text-lg sm:text-2xl font-bold transition-colors duration-300 ${
               isScrolled ? "text-foreground" : "text-white"
             }`}>
-              ReCicla<span className="text-primary">+</span> Angola
+              ReCicla<span className="text-primary">+</span><span className="hidden sm:inline"> Angola</span>
             </h1>
           </div>
-          <div className="flex items-center gap-3">
+
+          <nav className="hidden md:flex items-center gap-3">
             <Button
               variant="ghost"
               onClick={() => setLocation("/explore-map")}
@@ -142,8 +144,73 @@ export default function Home() {
                 </Button>
               </>
             )}
-          </div>
+          </nav>
+
+          <Button
+            variant="ghost"
+            size="icon"
+            className={`md:hidden ${isScrolled ? "" : "text-white hover:bg-white/10"}`}
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            data-testid="button-mobile-menu"
+          >
+            {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </Button>
         </div>
+
+        {mobileMenuOpen && (
+          <div className={`md:hidden ${isScrolled ? "bg-background" : "bg-black/90 backdrop-blur-md"} border-t`}>
+            <div className="container mx-auto px-4 py-4 flex flex-col gap-2">
+              <Button
+                variant="ghost"
+                onClick={() => {
+                  setLocation("/explore-map");
+                  setMobileMenuOpen(false);
+                }}
+                className={`justify-start ${isScrolled ? "" : "text-white hover:bg-white/10"}`}
+                data-testid="button-explore-map-mobile"
+              >
+                <MapPin className="h-4 w-4 mr-2" />
+                Explorar Mapa
+              </Button>
+              {isAuthenticated ? (
+                <Button
+                  onClick={() => {
+                    setLocation("/dashboard");
+                    setMobileMenuOpen(false);
+                  }}
+                  className="justify-start"
+                  data-testid="button-dashboard-mobile"
+                >
+                  Ir para Dashboard
+                </Button>
+              ) : (
+                <>
+                  <Button
+                    variant="ghost"
+                    onClick={() => {
+                      setLocation("/login");
+                      setMobileMenuOpen(false);
+                    }}
+                    className={`justify-start ${isScrolled ? "" : "text-white hover:bg-white/10"}`}
+                    data-testid="button-login-mobile"
+                  >
+                    Entrar
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      setLocation("/register");
+                      setMobileMenuOpen(false);
+                    }}
+                    className="justify-start"
+                    data-testid="button-register-mobile"
+                  >
+                    Registar-se
+                  </Button>
+                </>
+              )}
+            </div>
+          </div>
+        )}
       </header>
 
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
@@ -166,10 +233,10 @@ export default function Home() {
         </div>
 
         <div className="relative z-10 container mx-auto px-4 py-20 max-w-7xl text-center">
-          <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 tracking-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 tracking-tight">
             Transforme Resíduos em Recompensas
           </h2>
-          <p className="text-xl md:text-2xl text-white/90 mb-12 max-w-3xl mx-auto">
+          <p className="text-lg sm:text-xl md:text-2xl text-white/90 mb-12 max-w-3xl mx-auto px-4">
             Conecte-se com recicladores, ganhe pontos e contribua para um ambiente mais limpo e sustentável em Angola
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -192,26 +259,26 @@ export default function Home() {
             </Button>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-20 max-w-4xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-8 mt-12 sm:mt-20 max-w-4xl mx-auto">
             <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-white mb-2">{stats?.totalUsers || 0}</div>
-              <div className="text-white/80">Usuários</div>
+              <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-2">{stats?.totalUsers || 0}</div>
+              <div className="text-sm sm:text-base text-white/80">Usuários</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-white mb-2">
+              <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-2">
                 {stats ? Math.round(stats.totalKgRecycled) : 0} kg
               </div>
-              <div className="text-white/80">Reciclados</div>
+              <div className="text-sm sm:text-base text-white/80">Reciclados</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-white mb-2">
+              <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-2">
                 {stats?.totalCollections || 0}
               </div>
-              <div className="text-white/80">Recolhas</div>
+              <div className="text-sm sm:text-base text-white/80">Recolhas</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-white mb-2">21</div>
-              <div className="text-white/80">Províncias</div>
+              <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-2">21</div>
+              <div className="text-sm sm:text-base text-white/80">Províncias</div>
             </div>
           </div>
         </div>
@@ -225,9 +292,9 @@ export default function Home() {
         <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-black/60 to-black/70" />
         
         <div className="container mx-auto px-4 max-w-7xl relative z-10">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">Como Funciona</h2>
-            <p className="text-lg text-white/90 max-w-2xl mx-auto">
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 text-white">Como Funciona</h2>
+            <p className="text-base sm:text-lg text-white/90 max-w-2xl mx-auto px-4">
               Três passos simples para começar a reciclar e ganhar recompensas
             </p>
           </div>
@@ -242,12 +309,12 @@ export default function Home() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-black/30" />
               </div>
-              <CardContent className="p-8 relative z-10">
-                <div className="flex items-center justify-center w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm mb-6">
-                  <MapPin className="h-8 w-8 text-white" />
+              <CardContent className="p-6 sm:p-8 relative z-10">
+                <div className="flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-white/20 backdrop-blur-sm mb-4 sm:mb-6">
+                  <MapPin className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
                 </div>
-                <h3 className="text-2xl font-semibold mb-4 text-white">1. Publique seus Resíduos</h3>
-                <p className="text-white/90">
+                <h3 className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4 text-white">1. Publique seus Resíduos</h3>
+                <p className="text-sm sm:text-base text-white/90">
                   Tire uma foto dos seus recicláveis, adicione detalhes e publique na plataforma para que recicladores próximos vejam
                 </p>
               </CardContent>
@@ -262,12 +329,12 @@ export default function Home() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-black/30" />
               </div>
-              <CardContent className="p-8 relative z-10">
-                <div className="flex items-center justify-center w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm mb-6">
-                  <Users className="h-8 w-8 text-white" />
+              <CardContent className="p-6 sm:p-8 relative z-10">
+                <div className="flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-white/20 backdrop-blur-sm mb-4 sm:mb-6">
+                  <Users className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
                 </div>
-                <h3 className="text-2xl font-semibold mb-4 text-white">2. Conecte-se com Recicladores</h3>
-                <p className="text-white/90">
+                <h3 className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4 text-white">2. Conecte-se com Recicladores</h3>
+                <p className="text-sm sm:text-base text-white/90">
                   Recicladores profissionais aceitam seus pedidos e agendam a recolha de forma rápida e conveniente
                 </p>
               </CardContent>
@@ -282,12 +349,12 @@ export default function Home() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-black/30" />
               </div>
-              <CardContent className="p-8 relative z-10">
-                <div className="flex items-center justify-center w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm mb-6">
-                  <Award className="h-8 w-8 text-white" />
+              <CardContent className="p-6 sm:p-8 relative z-10">
+                <div className="flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-white/20 backdrop-blur-sm mb-4 sm:mb-6">
+                  <Award className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
                 </div>
-                <h3 className="text-2xl font-semibold mb-4 text-white">3. Ganhe Pontos e Recompensas</h3>
-                <p className="text-white/90">
+                <h3 className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4 text-white">3. Ganhe Pontos e Recompensas</h3>
+                <p className="text-sm sm:text-base text-white/90">
                   Acumule pontos por cada recolha concluída e troque por prémios ou dinheiro
                 </p>
               </CardContent>
@@ -312,10 +379,10 @@ export default function Home() {
         
         <div className="container mx-auto px-4 max-w-7xl relative z-10">
           <div className="max-w-3xl">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 text-white">
               Para Geradores de Resíduos
             </h2>
-            <p className="text-lg text-white/90 mb-8">
+            <p className="text-base sm:text-lg text-white/90 mb-6 sm:mb-8">
               Transforme o que você não precisa em valor. Nossa plataforma facilita a conexão com recicladores profissionais que recolhem seus resíduos e você ainda ganha pontos por contribuir para um planeta mais limpo.
             </p>
             <ul className="space-y-4 mb-8">
@@ -368,10 +435,10 @@ export default function Home() {
         
         <div className="container mx-auto px-4 max-w-7xl relative z-10">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 text-white">
               Para Recicladores
             </h2>
-            <p className="text-lg text-white/90 mb-8">
+            <p className="text-base sm:text-lg text-white/90 mb-6 sm:mb-8">
               Encontre oportunidades de recolha próximas, otimize suas rotas e aumente sua receita. Nossa plataforma conecta você diretamente com quem tem resíduos para reciclar.
             </p>
             <ul className="space-y-4 mb-8">
@@ -434,10 +501,10 @@ export default function Home() {
         <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-black/60 to-black/70" />
         
         <div className="container mx-auto px-4 max-w-4xl text-center relative z-10">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 text-white">
             Pronto para Fazer a Diferença?
           </h2>
-          <p className="text-xl mb-12 text-white/90">
+          <p className="text-lg sm:text-xl mb-8 sm:mb-12 text-white/90 px-4">
             Junte-se a milhares de angolanos que já estão transformando resíduos em recompensas
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

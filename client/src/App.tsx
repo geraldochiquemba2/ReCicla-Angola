@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/lib/theme-provider";
 import { AuthProvider, useAuth } from "@/lib/auth";
 import { useKeepAlive } from "@/hooks/use-keep-alive";
+import { useScrollToTop } from "@/hooks/use-scroll-to-top";
 
 import Home from "@/pages/home";
 import Login from "@/pages/login";
@@ -39,6 +40,7 @@ function PublicRoute({ component: Component }: { component: React.ComponentType 
 
 function Router() {
   useKeepAlive();
+  useScrollToTop();
   
   return (
     <Switch>
