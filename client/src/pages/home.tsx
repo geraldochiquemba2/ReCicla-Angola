@@ -275,7 +275,7 @@ export default function Home() {
             <Button
               size="lg"
               onClick={() => setLocation("/register")}
-              className="bg-primary hover:bg-primary/90 border border-primary-border"
+              className="bg-white/10 backdrop-blur-md border border-white/30 text-white hover:bg-white/20"
               data-testid="button-generator-register"
             >
               Começar como Gerador
