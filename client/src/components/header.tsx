@@ -1,10 +1,8 @@
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { useAuth } from "@/lib/auth";
 import {
-  Leaf,
   LogOut,
   User,
   Home,
@@ -90,8 +88,6 @@ export function Header() {
             <span>{user?.points || 0}</span>
             <span className="text-muted-foreground text-xs">pts</span>
           </Badge>
-
-          <ThemeToggle />
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
