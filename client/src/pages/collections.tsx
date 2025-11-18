@@ -201,15 +201,17 @@ export default function Collections() {
             ) : filteredCollections.length > 0 ? (
               <>
                 {view === "map" ? (
-                  <MapView
-                    collections={filteredCollections}
-                    className="h-[600px] w-full rounded-xl border"
-                    userLocation={
-                      user?.latitude && user?.longitude
-                        ? [parseFloat(user.latitude), parseFloat(user.longitude)]
-                        : undefined
-                    }
-                  />
+                  <div className="px-2">
+                    <MapView
+                      collections={filteredCollections}
+                      className="h-[600px] w-full rounded-xl border"
+                      userLocation={
+                        user?.latitude && user?.longitude
+                          ? [parseFloat(user.latitude), parseFloat(user.longitude)]
+                          : undefined
+                      }
+                    />
+                  </div>
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {filteredCollections.map((collection) => (
