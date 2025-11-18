@@ -15,6 +15,7 @@ import cardImage3 from "@assets/stock_images/rewards_prizes_money_5dfcdf13.jpg";
 import generatorBgVideo from "@assets/6894235-hd_1280_720_50fps_1763478733214.mp4";
 import ctaBackgroundImage from "@assets/stock_images/recycling_sustainabi_076cfd4e.jpg";
 import recyclerBgImage from "@assets/pexels-peaky-34418452_1763478228644.jpg";
+import comoFuncionaBgImage from "@assets/pexels-lucasallmann-612892_1763480127468.jpg";
 
 const heroVideos = [
   heroVideo1,
@@ -207,11 +208,17 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-20 bg-background">
-        <div className="container mx-auto px-4 max-w-7xl">
+      <section className="py-20 relative overflow-hidden">
+        <div 
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: `url(${comoFuncionaBgImage})` }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-black/60 to-black/70" />
+        
+        <div className="container mx-auto px-4 max-w-7xl relative z-10">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">Como Funciona</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">Como Funciona</h2>
+            <p className="text-lg text-white/90 max-w-2xl mx-auto">
               Três passos simples para começar a reciclar e ganhar recompensas
             </p>
           </div>
