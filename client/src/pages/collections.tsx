@@ -14,6 +14,7 @@ import { useAuth } from "@/lib/auth";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import type { CollectionWithUsers } from "@shared/schema";
 import { MapIcon, List, Plus } from "lucide-react";
+import collectionsBackground from "@assets/pexels-pixabay-417328_1763479949559.jpg";
 
 export default function Collections() {
   const { user } = useAuth();
@@ -101,10 +102,17 @@ export default function Collections() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
+    <div className="min-h-screen relative">
+      <div 
+        className="fixed inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url(${collectionsBackground})` }}
+      />
+      <div className="fixed inset-0 bg-background/30 dark:bg-background/30" />
+      
+      <div className="relative z-10">
+        <Header />
 
-      <main className="container mx-auto px-4 py-8 max-w-7xl">
+        <main className="container mx-auto px-4 py-8 max-w-7xl">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
           <div>
             <h1 className="text-3xl font-bold mb-2">Recolhas</h1>
@@ -269,7 +277,8 @@ export default function Collections() {
             )}
           </TabsContent>
         </Tabs>
-      </main>
+        </main>
+      </div>
     </div>
   );
 }
