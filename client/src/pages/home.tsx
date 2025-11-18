@@ -87,25 +87,26 @@ export default function Home() {
       </header>
 
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-        <div className="absolute inset-0">
+        <div className="absolute inset-0 bg-black">
           <video
             autoPlay
             loop
             muted
             playsInline
-            preload="metadata"
-            className="absolute inset-0 w-full h-full object-cover"
+            preload="none"
+            disablePictureInPicture
+            className="absolute inset-0 w-full h-full object-cover opacity-40"
             style={{ 
-              filter: 'brightness(0.7) blur(1px)',
-              transform: 'scale(1.05)',
-              width: '100%',
-              height: '100%',
-              imageRendering: 'crisp-edges'
+              filter: 'blur(4px) brightness(0.5)',
+              transform: 'scale(1.15)',
+              imageRendering: 'auto',
+              backfaceVisibility: 'hidden',
+              WebkitBackfaceVisibility: 'hidden'
             }}
           >
             <source src={heroVideo} type="video/mp4" />
           </video>
-          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/70" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/60" />
         </div>
 
         <div className="relative z-10 container mx-auto px-4 py-20 max-w-7xl text-center">
