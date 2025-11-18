@@ -151,37 +151,59 @@ export default function ExploreMap() {
 
                     <div className="space-y-2">
                       <label className="text-sm font-medium">Província</label>
-                      <Select value={selectedProvince} onValueChange={setSelectedProvince}>
-                        <SelectTrigger data-testid="select-province-filter">
-                          <SelectValue placeholder="Todas as províncias" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="">Todas as províncias</SelectItem>
-                          {getProvinces().map((province) => (
-                            <SelectItem key={province} value={province}>
-                              {province}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                      <div className="flex gap-2">
+                        <Select value={selectedProvince} onValueChange={setSelectedProvince}>
+                          <SelectTrigger data-testid="select-province-filter">
+                            <SelectValue placeholder="Todas as províncias" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {getProvinces().map((province) => (
+                              <SelectItem key={province} value={province}>
+                                {province}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        {selectedProvince && (
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => setSelectedProvince("")}
+                            data-testid="button-clear-province"
+                          >
+                            ×
+                          </Button>
+                        )}
+                      </div>
                     </div>
 
                     {selectedProvince && (
                       <div className="space-y-2">
                         <label className="text-sm font-medium">Município</label>
-                        <Select value={selectedMunicipality} onValueChange={setSelectedMunicipality}>
-                          <SelectTrigger data-testid="select-municipality-filter">
-                            <SelectValue placeholder="Todos os municípios" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="">Todos os municípios</SelectItem>
-                            {municipalities.map((municipality) => (
-                              <SelectItem key={municipality} value={municipality}>
-                                {municipality}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
+                        <div className="flex gap-2">
+                          <Select value={selectedMunicipality} onValueChange={setSelectedMunicipality}>
+                            <SelectTrigger data-testid="select-municipality-filter">
+                              <SelectValue placeholder="Todos os municípios" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {municipalities.map((municipality) => (
+                                <SelectItem key={municipality} value={municipality}>
+                                  {municipality}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          {selectedMunicipality && (
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={() => setSelectedMunicipality("")}
+                              data-testid="button-clear-municipality"
+                            >
+                              ×
+                            </Button>
+                          )}
+                        </div>
                       </div>
                     )}
 
