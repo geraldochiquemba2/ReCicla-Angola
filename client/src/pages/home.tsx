@@ -117,7 +117,7 @@ export default function Home() {
             <Button
               size="lg"
               onClick={() => setLocation("/register")}
-              className="text-lg px-8 py-6 h-auto bg-primary hover:bg-primary/90 border border-primary-border"
+              className="bg-primary hover:bg-primary/90 border border-primary-border"
               data-testid="button-hero-register"
             >
               Começar Agora
@@ -126,7 +126,7 @@ export default function Home() {
               size="lg"
               variant="outline"
               onClick={() => setLocation("/login")}
-              className="text-lg px-8 py-6 h-auto text-white border-white/30 bg-black/20 backdrop-blur-sm hover:bg-white/10"
+              className="text-white border-white/30 bg-black/20 backdrop-blur-sm hover:bg-white/10"
               data-testid="button-hero-login"
             >
               Já tenho conta
