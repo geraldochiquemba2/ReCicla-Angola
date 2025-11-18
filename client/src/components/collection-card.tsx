@@ -77,6 +77,20 @@ export function CollectionCard({
               <span data-testid="text-generator">{collection.generator.fullName}</span>
             </div>
           )}
+          {collection.recycler && (collection.status === "aceito" || collection.status === "concluido") && (
+            <div className="p-3 bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800 rounded-lg">
+              <p className="text-xs font-semibold text-green-800 dark:text-green-400 mb-1">
+                Reciclador que aceitou:
+              </p>
+              <div className="flex items-center gap-2 text-green-900 dark:text-green-300">
+                <User className="h-4 w-4 flex-shrink-0" />
+                <div>
+                  <p className="font-medium" data-testid="text-recycler-name">{collection.recycler.fullName}</p>
+                  <p className="text-xs" data-testid="text-recycler-phone">{collection.recycler.phone}</p>
+                </div>
+              </div>
+            </div>
+          )}
           <div className="flex items-center gap-2 text-muted-foreground">
             <Calendar className="h-4 w-4 flex-shrink-0" />
             <span data-testid="text-created-at">
