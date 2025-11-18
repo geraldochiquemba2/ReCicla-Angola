@@ -73,8 +73,16 @@ export class MemStorage implements IStorage {
   async createUser(insertUser: InsertUser): Promise<User> {
     const id = randomUUID();
     const user: User = {
-      ...insertUser,
       id,
+      username: null,
+      password: insertUser.password,
+      userType: insertUser.userType,
+      fullName: insertUser.fullName,
+      email: null,
+      phone: insertUser.phone,
+      address: insertUser.address ?? null,
+      latitude: insertUser.latitude ?? null,
+      longitude: insertUser.longitude ?? null,
       points: 0,
       totalRecycled: "0",
       createdAt: new Date(),
@@ -137,7 +145,14 @@ export class MemStorage implements IStorage {
 
     const collection: Collection = {
       id,
-      ...insertCollection,
+      generatorId: insertCollection.generatorId,
+      wasteType: insertCollection.wasteType,
+      quantity: insertCollection.quantity,
+      description: insertCollection.description ?? null,
+      photoUrl: insertCollection.photoUrl ?? null,
+      address: insertCollection.address,
+      latitude: insertCollection.latitude,
+      longitude: insertCollection.longitude,
       status: "disponivel",
       recyclerId: null,
       pointsGenerated,
@@ -175,7 +190,11 @@ export class MemStorage implements IStorage {
     const id = randomUUID();
     const transaction: PointTransaction = {
       id,
-      ...insertTransaction,
+      userId: insertTransaction.userId,
+      type: insertTransaction.type,
+      points: insertTransaction.points,
+      description: insertTransaction.description,
+      collectionId: insertTransaction.collectionId ?? null,
       createdAt: new Date(),
     };
 
