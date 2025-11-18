@@ -1,14 +1,42 @@
+import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Recycle, Users, Award, MapPin, TrendingUp, Leaf } from "lucide-react";
-import heroImage from "@assets/stock_images/people_recycling_pla_ca7df6ad.jpg";
-import recyclingImage from "@assets/stock_images/people_recycling_pla_935b694a.jpg";
+import heroImage1 from "@assets/stock_images/people_recycling_pla_ca7df6ad.jpg";
+import heroImage2 from "@assets/stock_images/people_recycling_pla_935b694a.jpg";
+import heroImage3 from "@assets/stock_images/community_volunteers_a6207be6.jpg";
+import heroImage4 from "@assets/stock_images/recycling_plastic_bo_2d700759.jpg";
+import heroImage5 from "@assets/stock_images/recycling_plastic_bo_05892f92.jpg";
+import heroImage6 from "@assets/stock_images/recycling_plastic_bo_f9238c6a.jpg";
+import heroImage7 from "@assets/stock_images/recycling_plastic_bo_c2b84f71.jpg";
+import heroImage8 from "@assets/stock_images/recycling_plastic_bo_2bce4b15.jpg";
+import recyclingImage from "@assets/stock_images/people_recycling_pla_4826874a.jpg";
 import natureImage from "@assets/stock_images/clean_environment_na_cab6887e.jpg";
-import communityImage from "@assets/stock_images/community_volunteers_a6207be6.jpg";
+import communityImage from "@assets/stock_images/community_volunteers_20ba1c74.jpg";
+
+const heroImages = [
+  heroImage1,
+  heroImage2,
+  heroImage3,
+  heroImage4,
+  heroImage5,
+  heroImage6,
+  heroImage7,
+  heroImage8,
+];
 
 export default function Home() {
   const [, setLocation] = useLocation();
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % heroImages.length);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="min-h-screen bg-background">
@@ -40,11 +68,16 @@ export default function Home() {
 
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
         <div className="absolute inset-0">
-          <img
-            src={heroImage}
-            alt="Reciclagem em Angola"
-            className="w-full h-full object-cover"
-          />
+          {heroImages.map((image, index) => (
+            <img
+              key={index}
+              src={image}
+              alt={`Reciclagem em Angola ${index + 1}`}
+              className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
+                index === currentImageIndex ? "opacity-100" : "opacity-0"
+              }`}
+            />
+          ))}
           <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/70" />
         </div>
 
