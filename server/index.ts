@@ -46,6 +46,24 @@ app.use((req, res, next) => {
   next();
 });
 
+// Keep-alive function para evitar hibernação
+function setupKeepAlive(port: number) {
+  const interval = 14 * 60 * 1000; // 14 minutos
+  
+  setInterval(async () => {
+    try {
+      const response = await fetch(`http://localhost:${port}/api/health`);
+      if (response.ok) {
+        log(`Keep-alive ping successful at ${new Date().toISOString()}`);
+      }
+    } catch (error) {
+      log(`Keep-alive ping failed: ${error}`);
+    }
+  }, interval);
+  
+  log(`Keep-alive system initialized (ping every ${interval / 1000 / 60} minutes)`);
+}
+
 (async () => {
   const server = await registerRoutes(app);
 
@@ -77,5 +95,10 @@ app.use((req, res, next) => {
     reusePort: true,
   }, () => {
     log(`serving on port ${port}`);
+    
+    // Inicializar keep-alive após 1 minuto
+    setTimeout(() => {
+      setupKeepAlive(port);
+    }, 60000);
   });
 })();

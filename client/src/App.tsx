@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/lib/theme-provider";
 import { AuthProvider, useAuth } from "@/lib/auth";
+import { useKeepAlive } from "@/hooks/use-keep-alive";
 
 import Home from "@/pages/home";
 import Login from "@/pages/login";
@@ -37,6 +38,8 @@ function PublicRoute({ component: Component }: { component: React.ComponentType 
 }
 
 function Router() {
+  useKeepAlive();
+  
   return (
     <Switch>
       <Route path="/login">

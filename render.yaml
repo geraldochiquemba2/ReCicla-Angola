@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: recicla-angola
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm run dev
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: SESSION_SECRET
+        generateValue: true
+    healthCheckPath: /api/health
+    autoDeploy: true
