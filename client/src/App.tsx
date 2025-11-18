@@ -58,9 +58,7 @@ function Router() {
         <ProtectedRoute component={Collections} />
       </Route>
       <Route path="/explore-map" component={ExploreMap} />
-      <Route path="/">
-        <PublicRoute component={Home} />
-      </Route>
+      <Route path="/" component={Home} />
       <Route component={NotFound} />
     </Switch>
   );
