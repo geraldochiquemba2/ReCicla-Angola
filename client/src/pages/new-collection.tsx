@@ -14,7 +14,7 @@ import { useToast } from "@/hooks/use-toast";
 import { insertCollectionSchema, type InsertCollection } from "@shared/schema";
 import { WasteTypeIcon, getWasteTypeLabel } from "@/components/waste-type-icon";
 import { apiRequest, queryClient } from "@/lib/queryClient";
-import { MapPin, Package, FileText, Image, CheckCircle, ArrowLeft } from "lucide-react";
+import { MapPin, Package, FileText, Image, CheckCircle, ArrowLeft, Upload, X } from "lucide-react";
 
 const wasteTypes = ["plastico", "papel", "vidro", "metal", "eletronicos", "organico"] as const;
 
@@ -22,6 +22,8 @@ export default function NewCollection() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
   const [step, setStep] = useState(1);
+  const [photoFile, setPhotoFile] = useState<File | null>(null);
+  const [photoPreview, setPhotoPreview] = useState<string>("");
 
   const form = useForm<InsertCollection>({
     resolver: zodResolver(insertCollectionSchema),
@@ -37,8 +39,35 @@ export default function NewCollection() {
     },
   });
 
+  const uploadMutation = useMutation({
+    mutationFn: async (file: File) => {
+      const formData = new FormData();
+      formData.append("photo", file);
+      const response = await fetch("/api/upload", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: formData,
+      });
+      if (!response.ok) {
+        throw new Error("Falha no upload da foto");
+      }
+      return response.json();
+    },
+  });
+
   const createMutation = useMutation({
-    mutationFn: (data: InsertCollection) => apiRequest("POST", "/api/collections", data),
+    mutationFn: async (data: InsertCollection) => {
+      let photoUrl = data.photoUrl;
+      
+      if (photoFile) {
+        const uploadResult = await uploadMutation.mutateAsync(photoFile);
+        photoUrl = uploadResult.url;
+      }
+      
+      return apiRequest("POST", "/api/collections", { ...data, photoUrl });
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/collections"] });
       queryClient.invalidateQueries({ queryKey: ["/api/stats"] });
@@ -62,10 +91,36 @@ export default function NewCollection() {
   };
 
   const nextStep = async () => {
-    const isValid = await form.trigger();
+    let fieldsToValidate: any[] = [];
+    
+    if (step === 1) {
+      fieldsToValidate = ["wasteType", "quantity"];
+    } else if (step === 2) {
+      fieldsToValidate = ["address", "latitude", "longitude"];
+    }
+    
+    const isValid = await form.trigger(fieldsToValidate);
     if (isValid && step < 3) {
       setStep(step + 1);
     }
+  };
+
+  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setPhotoFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPhotoPreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const removePhoto = () => {
+    setPhotoFile(null);
+    setPhotoPreview("");
+    form.setValue("photoUrl", "");
   };
 
   return (
@@ -278,43 +333,56 @@ export default function NewCollection() {
                 {/* Step 3: Foto (opcional) */}
                 {step === 3 && (
                   <div className="space-y-6">
-                    <FormField
-                      control={form.control}
-                      name="photoUrl"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="flex items-center gap-2">
-                            <Image className="h-4 w-4" />
-                            URL da Foto (opcional)
-                          </FormLabel>
-                          <FormControl>
-                            <Input
-                              type="url"
-                              placeholder="https://exemplo.com/foto.jpg"
-                              {...field}
-                              data-testid="input-photo-url"
-                            />
-                          </FormControl>
-                          <FormDescription>
-                            Adicione uma foto para ajudar os recicladores a identificar o resíduo
-                          </FormDescription>
-                          <FormMessage />
-                        </FormItem>
+                    <div>
+                      <FormLabel className="flex items-center gap-2 mb-2">
+                        <Image className="h-4 w-4" />
+                        Foto do Resíduo (opcional)
+                      </FormLabel>
+                      
+                      {!photoPreview ? (
+                        <div className="border-2 border-dashed rounded-lg p-8 text-center hover-elevate active-elevate-2 cursor-pointer">
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handlePhotoChange}
+                            className="hidden"
+                            id="photo-upload"
+                            data-testid="input-photo-upload"
+                          />
+                          <label htmlFor="photo-upload" className="cursor-pointer">
+                            <Upload className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+                            <p className="text-sm text-muted-foreground mb-2">
+                              Clique para fazer upload de uma foto
+                            </p>
+                            <p className="text-xs text-muted-foreground">
+                              PNG, JPG até 10MB
+                            </p>
+                          </label>
+                        </div>
+                      ) : (
+                        <div className="relative rounded-lg overflow-hidden border">
+                          <img
+                            src={photoPreview}
+                            alt="Preview"
+                            className="w-full h-64 object-cover"
+                          />
+                          <Button
+                            type="button"
+                            size="icon"
+                            variant="destructive"
+                            className="absolute top-2 right-2"
+                            onClick={removePhoto}
+                            data-testid="button-remove-photo"
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
+                        </div>
                       )}
-                    />
-
-                    {form.watch("photoUrl") && (
-                      <div className="rounded-lg overflow-hidden border">
-                        <img
-                          src={form.watch("photoUrl")}
-                          alt="Preview"
-                          className="w-full h-64 object-cover"
-                          onError={(e) => {
-                            (e.target as HTMLImageElement).src = "";
-                          }}
-                        />
-                      </div>
-                    )}
+                      
+                      <p className="text-sm text-muted-foreground mt-2">
+                        Adicione uma foto para ajudar os recicladores a identificar o resíduo
+                      </p>
+                    </div>
 
                     {/* Summary */}
                     <div className="p-6 bg-primary/10 rounded-lg space-y-3">
