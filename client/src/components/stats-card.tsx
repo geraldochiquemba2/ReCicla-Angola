@@ -18,7 +18,7 @@ export function StatsCard({ title, value, subtitle, icon: Icon, trend, backgroun
     <Card className="hover-elevate transition-all duration-300 overflow-hidden relative">
       {backgroundImage && (
         <div 
-          className="absolute inset-0 bg-cover bg-center opacity-20"
+          className="absolute inset-0 bg-cover bg-center opacity-40"
           style={{ backgroundImage: `url(${backgroundImage})` }}
         />
       )}
