@@ -27,7 +27,7 @@ export default function ExploreMap() {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="fixed top-0 w-full bg-background/80 backdrop-blur-md border-b z-50">
+      <header className="fixed top-0 w-full bg-background/80 backdrop-blur-md border-b z-[9999]">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between max-w-7xl">
           <Button
             variant="ghost"
