@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Recycle, Users, Award, MapPin, TrendingUp, Leaf } from "lucide-react";
+import { useAuth } from "@/lib/auth";
 import heroImage1 from "@assets/stock_images/people_recycling_pla_ca7df6ad.jpg";
 import heroImage2 from "@assets/stock_images/people_recycling_pla_935b694a.jpg";
 import heroImage3 from "@assets/stock_images/community_volunteers_a6207be6.jpg";
@@ -43,6 +44,7 @@ export default function Home() {
   const [, setLocation] = useLocation();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isScrolled, setIsScrolled] = useState(false);
+  const { isAuthenticated } = useAuth();
 
   const { data: stats } = useQuery<PlatformStats>({
     queryKey: ["/api/platform/stats"],
@@ -85,20 +87,31 @@ export default function Home() {
             </h1>
           </div>
           <div className="flex items-center gap-3">
-            <Button
-              variant="ghost"
-              onClick={() => setLocation("/login")}
-              className={isScrolled ? "" : "text-white hover:bg-white/10"}
-              data-testid="button-login"
-            >
-              Entrar
-            </Button>
-            <Button
-              onClick={() => setLocation("/register")}
-              data-testid="button-register"
-            >
-              Registar-se
-            </Button>
+            {isAuthenticated ? (
+              <Button
+                onClick={() => setLocation("/dashboard")}
+                data-testid="button-dashboard"
+              >
+                Ir para Dashboard
+              </Button>
+            ) : (
+              <>
+                <Button
+                  variant="ghost"
+                  onClick={() => setLocation("/login")}
+                  className={isScrolled ? "" : "text-white hover:bg-white/10"}
+                  data-testid="button-login"
+                >
+                  Entrar
+                </Button>
+                <Button
+                  onClick={() => setLocation("/register")}
+                  data-testid="button-register"
+                >
+                  Registar-se
+                </Button>
+              </>
+            )}
           </div>
         </div>
       </header>
