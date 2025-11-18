@@ -120,7 +120,7 @@ export default function Login() {
             className="w-full h-full object-cover"
           />
         </div>
-        <Card className="w-full max-w-md border-none shadow-none lg:border lg:shadow-sm relative z-10 bg-background/90 backdrop-blur-md">
+        <Card className="w-full max-w-md border-none shadow-none lg:border lg:shadow-lg relative z-10 bg-background/40 backdrop-blur-xl">
           <CardHeader className="space-y-1">
             <div className="flex items-center gap-2 mb-4 lg:hidden">
               <img src={logoIcon} alt="ReCicla+" className="h-8 w-8" />
