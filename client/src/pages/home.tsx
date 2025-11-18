@@ -29,6 +29,7 @@ const heroImages = [
 export default function Home() {
   const [, setLocation] = useLocation();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -38,13 +39,30 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <div className="min-h-screen bg-background">
-      <header className="fixed top-0 w-full bg-background/80 backdrop-blur-md border-b z-50">
+      <header className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+        isScrolled 
+          ? "bg-background/80 backdrop-blur-md border-b" 
+          : "bg-transparent border-transparent"
+      }`}>
         <div className="container mx-auto px-4 py-4 flex items-center justify-between max-w-7xl">
           <div className="flex items-center gap-2">
-            <Recycle className="h-8 w-8 text-primary" />
-            <h1 className="text-2xl font-bold">
+            <Recycle className={`h-8 w-8 transition-colors duration-300 ${
+              isScrolled ? "text-primary" : "text-white"
+            }`} />
+            <h1 className={`text-2xl font-bold transition-colors duration-300 ${
+              isScrolled ? "text-foreground" : "text-white"
+            }`}>
               ReCicla<span className="text-primary">+</span> Angola
             </h1>
           </div>
@@ -52,6 +70,7 @@ export default function Home() {
             <Button
               variant="ghost"
               onClick={() => setLocation("/login")}
+              className={isScrolled ? "" : "text-white hover:bg-white/10"}
               data-testid="button-login"
             >
               Entrar
