@@ -154,16 +154,16 @@ export default function ExploreMap() {
             </div>
 
             <div className="lg:w-7/12 space-y-4">
-              <Card>
+              <Card className="bg-white/10 backdrop-blur-md border-white/20">
                 <CardContent className="p-6">
                   <div className="flex items-center gap-2 mb-4">
-                    <Filter className="h-5 w-5 text-primary" />
-                    <h3 className="font-semibold">Filtros</h3>
+                    <Filter className="h-5 w-5 text-white" />
+                    <h3 className="font-semibold text-white">Filtros</h3>
                   </div>
                   
                   <div className="space-y-4">
                     <div className="space-y-2">
-                      <label className="text-sm font-medium">Status</label>
+                      <label className="text-sm font-medium text-white">Status</label>
                       <div className="space-y-2">
                         <Button
                           variant={selectedStatus === "all" ? "default" : "outline"}
@@ -186,7 +186,7 @@ export default function ExploreMap() {
                     </div>
 
                     <div className="space-y-2">
-                      <label className="text-sm font-medium">Província</label>
+                      <label className="text-sm font-medium text-white">Província</label>
                       <div className="flex gap-2">
                         <Select value={selectedProvince} onValueChange={setSelectedProvince}>
                           <SelectTrigger data-testid="select-province-filter">
@@ -215,7 +215,7 @@ export default function ExploreMap() {
 
                     {selectedProvince && (
                       <div className="space-y-2">
-                        <label className="text-sm font-medium">Município</label>
+                        <label className="text-sm font-medium text-white">Município</label>
                         <div className="flex gap-2">
                           <Select value={selectedMunicipality} onValueChange={setSelectedMunicipality}>
                             <SelectTrigger data-testid="select-municipality-filter">
@@ -261,31 +261,31 @@ export default function ExploreMap() {
                 </CardContent>
               </Card>
 
-              <Card>
+              <Card className="bg-white/10 backdrop-blur-md border-white/20">
                 <CardContent className="p-6">
-                  <h3 className="font-semibold mb-4">Legenda do Mapa</h3>
+                  <h3 className="font-semibold mb-4 text-white">Legenda do Mapa</h3>
                   <div className="space-y-3 text-sm">
                     <div className="flex items-center gap-2">
                       <div className="w-4 h-4 rounded-full bg-green-500" />
-                      <span>Disponível para recolha</span>
+                      <span className="text-white">Disponível para recolha</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <div className="w-4 h-4 rounded-full bg-orange-500" />
-                      <span>Já aceito por reciclador</span>
+                      <span className="text-white">Já aceito por reciclador</span>
                     </div>
                   </div>
                 </CardContent>
               </Card>
 
               {filteredCollections.length > 0 && (
-                <Card>
+                <Card className="bg-white/10 backdrop-blur-md border-white/20">
                   <CardContent className="p-6">
-                    <h3 className="font-semibold mb-4">Recolhas Recentes</h3>
+                    <h3 className="font-semibold mb-4 text-white">Recolhas Recentes</h3>
                     <div className="space-y-3 max-h-[300px] overflow-y-auto">
                       {filteredCollections.slice(0, 5).map((collection) => (
                         <div
                           key={collection.id}
-                          className="p-3 rounded-lg border hover-elevate cursor-pointer"
+                          className="p-3 rounded-lg bg-white/5 backdrop-blur-sm border border-white/20 hover-elevate cursor-pointer"
                           data-testid={`collection-${collection.id}`}
                         >
                           <div className="flex gap-3">
@@ -298,7 +298,7 @@ export default function ExploreMap() {
                             )}
                             <div className="flex-1 min-w-0">
                               <div className="flex items-start justify-between mb-2">
-                                <h4 className="font-semibold text-sm">
+                                <h4 className="font-semibold text-sm text-white">
                                   {getWasteTypeLabel(collection.wasteType)}
                                 </h4>
                                 <Badge
@@ -309,23 +309,23 @@ export default function ExploreMap() {
                               </div>
                               {collection.generator && (
                                 <div className="mb-2">
-                                  <p className="text-xs font-medium text-foreground">
+                                  <p className="text-xs font-medium text-white">
                                     {collection.generator.fullName}
                                   </p>
-                                  <p className="text-xs text-muted-foreground">
+                                  <p className="text-xs text-white/70">
                                     {collection.generator.phone}
                                   </p>
                                 </div>
                               )}
-                              <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                              <div className="flex items-center gap-1 text-xs text-white/80">
                                 <MapPin className="h-3 w-3" />
                                 <span>{collection.address}</span>
                               </div>
-                              <p className="text-xs text-muted-foreground mt-1">
+                              <p className="text-xs text-white/70 mt-1">
                                 {collection.quantity} kg
                               </p>
                               {collection.pointsGenerated > 0 && (
-                                <p className="text-xs font-semibold text-primary mt-1">
+                                <p className="text-xs font-semibold text-green-400 mt-1">
                                   {collection.pointsGenerated} pontos
                                 </p>
                               )}
