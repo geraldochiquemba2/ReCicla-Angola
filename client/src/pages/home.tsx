@@ -5,13 +5,31 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Recycle, Users, Award, MapPin, TrendingUp, Leaf } from "lucide-react";
 import { useAuth } from "@/lib/auth";
-import heroVideo from "@assets/9323702-uhd_3840_2160_24fps_1763477442263.mp4";
+import heroImage1 from "@assets/stock_images/people_recycling_pla_ca7df6ad.jpg";
+import heroImage2 from "@assets/stock_images/people_recycling_pla_935b694a.jpg";
+import heroImage3 from "@assets/stock_images/community_volunteers_a6207be6.jpg";
+import heroImage4 from "@assets/stock_images/recycling_plastic_bo_2d700759.jpg";
+import heroImage5 from "@assets/stock_images/recycling_plastic_bo_05892f92.jpg";
+import heroImage6 from "@assets/stock_images/recycling_plastic_bo_f9238c6a.jpg";
+import heroImage7 from "@assets/stock_images/recycling_plastic_bo_c2b84f71.jpg";
+import heroImage8 from "@assets/stock_images/recycling_plastic_bo_2bce4b15.jpg";
 import cardImage1 from "@assets/stock_images/smartphone_taking_ph_42557168.jpg";
 import cardImage2 from "@assets/stock_images/people_working_toget_e1e22104.jpg";
 import cardImage3 from "@assets/stock_images/rewards_prizes_money_5dfcdf13.jpg";
 import generatorBgImage from "@assets/stock_images/person_sorting_recyc_c62d4a9b.jpg";
 import ctaBackgroundImage from "@assets/stock_images/recycling_sustainabi_076cfd4e.jpg";
 import recyclerBgImage from "@assets/stock_images/recycling_workers_co_8e8551af.jpg";
+
+const heroImages = [
+  heroImage1,
+  heroImage2,
+  heroImage3,
+  heroImage4,
+  heroImage5,
+  heroImage6,
+  heroImage7,
+  heroImage8,
+];
 
 interface PlatformStats {
   totalUsers: number;
@@ -21,6 +39,7 @@ interface PlatformStats {
 
 export default function Home() {
   const [, setLocation] = useLocation();
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isScrolled, setIsScrolled] = useState(false);
   const { isAuthenticated } = useAuth();
 
@@ -28,6 +47,14 @@ export default function Home() {
     queryKey: ["/api/platform/stats"],
     retry: false,
   });
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % heroImages.length);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -87,26 +114,18 @@ export default function Home() {
       </header>
 
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-        <div className="absolute inset-0 bg-black">
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="none"
-            disablePictureInPicture
-            className="absolute inset-0 w-full h-full object-cover opacity-40"
-            style={{ 
-              filter: 'blur(4px) brightness(0.5)',
-              transform: 'scale(1.15)',
-              imageRendering: 'auto',
-              backfaceVisibility: 'hidden',
-              WebkitBackfaceVisibility: 'hidden'
-            }}
-          >
-            <source src={heroVideo} type="video/mp4" />
-          </video>
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/60" />
+        <div className="absolute inset-0">
+          {heroImages.map((image, index) => (
+            <img
+              key={index}
+              src={image}
+              alt={`Reciclagem em Angola ${index + 1}`}
+              className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
+                index === currentImageIndex ? "opacity-100" : "opacity-0"
+              }`}
+            />
+          ))}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/70" />
         </div>
 
         <div className="relative z-10 container mx-auto px-4 py-20 max-w-7xl text-center">
