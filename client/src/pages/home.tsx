@@ -1,18 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Recycle, Users, Award, MapPin, TrendingUp, Leaf } from "lucide-react";
 import { useAuth } from "@/lib/auth";
-import heroImage1 from "@assets/stock_images/people_recycling_pla_ca7df6ad.jpg";
-import heroImage2 from "@assets/stock_images/people_recycling_pla_935b694a.jpg";
-import heroImage3 from "@assets/stock_images/community_volunteers_a6207be6.jpg";
-import heroImage4 from "@assets/stock_images/recycling_plastic_bo_2d700759.jpg";
-import heroImage5 from "@assets/stock_images/recycling_plastic_bo_05892f92.jpg";
-import heroImage6 from "@assets/stock_images/recycling_plastic_bo_f9238c6a.jpg";
-import heroImage7 from "@assets/stock_images/recycling_plastic_bo_c2b84f71.jpg";
-import heroImage8 from "@assets/stock_images/recycling_plastic_bo_2bce4b15.jpg";
+import heroVideo1 from "@assets/6591442-hd_1366_720_25fps_1763479368534.mp4";
+import heroVideo2 from "@assets/13612268_1280_720_25fps_1763479368535.mp4";
+import heroVideo3 from "@assets/7551328-hd_1280_720_50fps_1763479368536.mp4";
+import heroVideo4 from "@assets/9323702-hd_1280_720_24fps_1763479368536.mp4";
 import cardImage1 from "@assets/stock_images/smartphone_taking_ph_42557168.jpg";
 import cardImage2 from "@assets/stock_images/people_working_toget_e1e22104.jpg";
 import cardImage3 from "@assets/stock_images/rewards_prizes_money_5dfcdf13.jpg";
@@ -20,15 +16,11 @@ import generatorBgVideo from "@assets/6894235-hd_1280_720_50fps_1763478733214.mp
 import ctaBackgroundImage from "@assets/stock_images/recycling_sustainabi_076cfd4e.jpg";
 import recyclerBgImage from "@assets/pexels-peaky-34418452_1763478228644.jpg";
 
-const heroImages = [
-  heroImage1,
-  heroImage2,
-  heroImage3,
-  heroImage4,
-  heroImage5,
-  heroImage6,
-  heroImage7,
-  heroImage8,
+const heroVideos = [
+  heroVideo1,
+  heroVideo2,
+  heroVideo3,
+  heroVideo4,
 ];
 
 interface PlatformStats {
@@ -39,9 +31,10 @@ interface PlatformStats {
 
 export default function Home() {
   const [, setLocation] = useLocation();
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [isScrolled, setIsScrolled] = useState(false);
   const { isAuthenticated } = useAuth();
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
   const { data: stats } = useQuery<PlatformStats>({
     queryKey: ["/api/platform/stats"],
@@ -49,12 +42,42 @@ export default function Home() {
   });
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % heroImages.length);
-    }, 5000);
+    const currentVideo = videoRefs.current[currentVideoIndex];
+    if (!currentVideo) return;
 
-    return () => clearInterval(interval);
-  }, []);
+    const handleTimeUpdate = () => {
+      const timeRemaining = currentVideo.duration - currentVideo.currentTime;
+      
+      if (timeRemaining <= 4 && timeRemaining > 3.9) {
+        const nextIndex = (currentVideoIndex + 1) % heroVideos.length;
+        const nextVideo = videoRefs.current[nextIndex];
+        
+        if (nextVideo) {
+          nextVideo.load();
+        }
+      }
+    };
+
+    const handleVideoEnd = () => {
+      const nextIndex = (currentVideoIndex + 1) % heroVideos.length;
+      setCurrentVideoIndex(nextIndex);
+      
+      const nextVideo = videoRefs.current[nextIndex];
+      if (nextVideo) {
+        nextVideo.play().catch(err => console.log('Auto-play prevented:', err));
+      }
+    };
+
+    currentVideo.addEventListener('timeupdate', handleTimeUpdate);
+    currentVideo.addEventListener('ended', handleVideoEnd);
+
+    currentVideo.play().catch(err => console.log('Auto-play prevented:', err));
+
+    return () => {
+      currentVideo.removeEventListener('timeupdate', handleTimeUpdate);
+      currentVideo.removeEventListener('ended', handleVideoEnd);
+    };
+  }, [currentVideoIndex]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -115,15 +138,19 @@ export default function Home() {
 
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
         <div className="absolute inset-0">
-          {heroImages.map((image, index) => (
-            <img
+          {heroVideos.map((video, index) => (
+            <video
               key={index}
-              src={image}
-              alt={`Reciclagem em Angola ${index + 1}`}
+              ref={(el) => (videoRefs.current[index] = el)}
+              muted
+              playsInline
+              preload={index === 0 ? "auto" : "none"}
               className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
-                index === currentImageIndex ? "opacity-100" : "opacity-0"
+                index === currentVideoIndex ? "opacity-100" : "opacity-0"
               }`}
-            />
+            >
+              <source src={video} type="video/mp4" />
+            </video>
           ))}
           <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/70" />
         </div>
