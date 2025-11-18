@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { Header } from "@/components/header";
 import { StatsCard } from "@/components/stats-card";
 import { CollectionCard } from "@/components/collection-card";
@@ -8,13 +8,176 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import { useAuth } from "@/lib/auth";
-import type { CollectionWithUsers, UserStats, PointTransaction } from "@shared/schema";
-import { User, Mail, Phone, MapPin, Award, TrendingUp, Package, Leaf, TreePine, Zap, Calendar } from "lucide-react";
+import type { CollectionWithUsers, UserStats, PointTransaction, UpdateProfile } from "@shared/schema";
+import { updateProfileSchema } from "@shared/schema";
+import { User, Mail, Phone, MapPin, Award, TrendingUp, Package, Leaf, TreePine, Zap, Calendar, Edit } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import achievementImg from "@assets/generated_images/Achievement_celebration_graphic_b8f09fdd.png";
 import backgroundImg from "@assets/pexels-pixabay-414807_1763482394364.jpg";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { apiRequest, queryClient } from "@/lib/queryClient";
+import { useToast } from "@/hooks/use-toast";
+
+function EditProfileDialog({ user }: { user: any }) {
+  const [open, setOpen] = useState(false);
+  const { toast } = useToast();
+
+  const form = useForm<UpdateProfile>({
+    resolver: zodResolver(updateProfileSchema),
+    defaultValues: {
+      fullName: user?.fullName || "",
+      email: user?.email || "",
+      phone: user?.phone || "",
+      address: user?.address || "",
+      username: user?.username || "",
+    },
+  });
+
+  const updateProfileMutation = useMutation({
+    mutationFn: async (data: UpdateProfile) => {
+      return await apiRequest("/api/user/profile", {
+        method: "PUT",
+        body: JSON.stringify(data),
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/user"] });
+      toast({
+        title: "Perfil atualizado",
+        description: "As suas informações foram atualizadas com sucesso",
+      });
+      setOpen(false);
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Erro",
+        description: error.message || "Erro ao atualizar perfil",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const onSubmit = (data: UpdateProfile) => {
+    updateProfileMutation.mutate(data);
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button size="icon" variant="outline" data-testid="button-edit-profile">
+          <Edit className="h-4 w-4" />
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[500px]">
+        <DialogHeader>
+          <DialogTitle>Editar Perfil</DialogTitle>
+          <DialogDescription>
+            Atualize as suas informações pessoais
+          </DialogDescription>
+        </DialogHeader>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <FormField
+              control={form.control}
+              name="fullName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Nome Completo</FormLabel>
+                  <FormControl>
+                    <Input {...field} data-testid="input-fullname" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="username"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Nome de Utilizador</FormLabel>
+                  <FormControl>
+                    <Input {...field} data-testid="input-username" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input type="email" {...field} data-testid="input-email" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="phone"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Telefone</FormLabel>
+                  <FormControl>
+                    <Input {...field} data-testid="input-phone" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="address"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Endereço</FormLabel>
+                  <FormControl>
+                    <Input {...field} data-testid="input-address" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <div className="flex gap-2 justify-end">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setOpen(false)}
+                data-testid="button-cancel"
+              >
+                Cancelar
+              </Button>
+              <Button
+                type="submit"
+                disabled={updateProfileMutation.isPending}
+                data-testid="button-save"
+              >
+                {updateProfileMutation.isPending ? "A guardar..." : "Guardar"}
+              </Button>
+            </div>
+          </form>
+        </Form>
+      </DialogContent>
+    </Dialog>
+  );
+}
 
 export default function Profile() {
   const { user } = useAuth();
@@ -55,6 +218,9 @@ export default function Profile() {
         <div className="mb-8">
           <Card>
             <CardContent className="p-8">
+              <div className="flex justify-end mb-2">
+                <EditProfileDialog user={user} />
+              </div>
               <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
                 <div className="h-24 w-24 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
                   <User className="h-12 w-12 text-primary" />

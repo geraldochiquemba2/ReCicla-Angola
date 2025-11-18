@@ -157,6 +157,17 @@ export const loginSchema = z.object({
 
 export type LoginData = z.infer<typeof loginSchema>;
 
+// Schema de atualização de perfil
+export const updateProfileSchema = z.object({
+  fullName: z.string().min(3, "Nome completo deve ter pelo menos 3 caracteres").optional(),
+  email: z.string().email("Email inválido").optional().or(z.literal("")),
+  phone: z.string().min(9, "Número de telefone inválido").regex(/^[+\d\s()-]+$/, "Formato de telefone inválido").optional(),
+  address: z.string().optional().or(z.literal("")),
+  username: z.string().optional().or(z.literal("")),
+});
+
+export type UpdateProfile = z.infer<typeof updateProfileSchema>;
+
 // Tipos auxiliares para o frontend
 export interface CollectionWithUsers extends Collection {
   generator?: User;

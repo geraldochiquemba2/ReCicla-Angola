@@ -11,6 +11,7 @@ import {
   insertUserSchema,
   loginSchema,
   insertCollectionSchema,
+  updateProfileSchema,
   type CollectionWithUsers,
 } from "@shared/schema";
 import { ZodError } from "zod";
@@ -136,6 +137,50 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: error.errors[0].message });
       }
       res.status(500).json({ message: "Erro ao fazer login" });
+    }
+  });
+
+  // Update profile
+  app.put("/api/user/profile", requireAuth, async (req, res) => {
+    try {
+      const user = (req as any).user;
+      const data = updateProfileSchema.parse(req.body);
+
+      // Check if phone is being changed and if it's already in use
+      if (data.phone) {
+        const normalizedPhone = normalizePhone(data.phone);
+        const allUsers = await storage.getAllUsers();
+        const existingPhone = allUsers.find(u => 
+          normalizePhone(u.phone) === normalizedPhone && u.id !== user.id
+        );
+        if (existingPhone) {
+          return res.status(400).json({ message: "Número de telefone já está em uso" });
+        }
+        data.phone = normalizedPhone;
+      }
+
+      // Check if email is being changed and if it's already in use
+      if (data.email) {
+        const allUsers = await storage.getAllUsers();
+        const existingEmail = allUsers.find(u => 
+          u.email === data.email && u.id !== user.id
+        );
+        if (existingEmail) {
+          return res.status(400).json({ message: "Email já está em uso" });
+        }
+      }
+
+      const updatedUser = await storage.updateUser(user.id, data);
+      if (!updatedUser) {
+        return res.status(404).json({ message: "Utilizador não encontrado" });
+      }
+
+      res.json({ user: sanitizeUser(updatedUser) });
+    } catch (error) {
+      if (error instanceof ZodError) {
+        return res.status(400).json({ message: error.errors[0].message });
+      }
+      res.status(500).json({ message: "Erro ao atualizar perfil" });
     }
   });
 
