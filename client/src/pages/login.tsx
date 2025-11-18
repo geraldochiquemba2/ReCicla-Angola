@@ -12,6 +12,7 @@ import { loginSchema, type LoginData } from "@shared/schema";
 import { ArrowLeft } from "lucide-react";
 import logoIcon from "@assets/generated_images/ReCicla+_app_logo_icon_c8ba0c8a.png";
 import heroImg from "@assets/generated_images/Hero_background_environmental_impact_b855236c.png";
+import loginBgImg from "@assets/stock_images/clean_environment_na_cab6887e.jpg";
 
 export default function Login() {
   const [, setLocation] = useLocation();
@@ -111,8 +112,16 @@ export default function Login() {
       </div>
 
       {/* Right side - Login Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8">
-        <Card className="w-full max-w-md border-none shadow-none lg:border lg:shadow-sm">
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 relative overflow-hidden">
+        <div className="absolute inset-0">
+          <img
+            src={loginBgImg}
+            alt="Ambiente limpo"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-background/95 backdrop-blur-sm" />
+        </div>
+        <Card className="w-full max-w-md border-none shadow-none lg:border lg:shadow-sm relative z-10">
           <CardHeader className="space-y-1">
             <div className="flex items-center gap-2 mb-4 lg:hidden">
               <img src={logoIcon} alt="ReCicla+" className="h-8 w-8" />
