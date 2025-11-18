@@ -91,6 +91,9 @@ export default function NewCollection() {
   });
 
   const onSubmit = (data: InsertCollection) => {
+    if (step !== 3) {
+      return;
+    }
     createMutation.mutate(data);
   };
 
@@ -197,7 +200,12 @@ export default function NewCollection() {
             </div>
 
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <form onSubmit={form.handleSubmit(onSubmit)} onKeyDown={(e) => {
+                if (e.key === 'Enter' && step !== 3) {
+                  e.preventDefault();
+                  nextStep();
+                }
+              }} className="space-y-6">
                 {/* Step 1: Tipo e Quantidade */}
                 {step === 1 && (
                   <div className="space-y-6">
