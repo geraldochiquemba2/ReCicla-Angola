@@ -14,6 +14,9 @@ import heroImage8 from "@assets/stock_images/recycling_plastic_bo_2bce4b15.jpg";
 import recyclingImage from "@assets/stock_images/people_recycling_pla_4826874a.jpg";
 import natureImage from "@assets/stock_images/clean_environment_na_cab6887e.jpg";
 import communityImage from "@assets/stock_images/community_volunteers_20ba1c74.jpg";
+import cardImage1 from "@assets/stock_images/smartphone_taking_ph_42557168.jpg";
+import cardImage2 from "@assets/stock_images/people_working_toget_e1e22104.jpg";
+import cardImage3 from "@assets/stock_images/rewards_prizes_money_5dfcdf13.jpg";
 
 const heroImages = [
   heroImage1,
@@ -158,37 +161,61 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <Card className="hover-elevate">
-              <CardContent className="p-8">
-                <div className="flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-6">
-                  <MapPin className="h-8 w-8 text-primary" />
+            <Card className="hover-elevate overflow-hidden relative">
+              <div className="absolute inset-0">
+                <img
+                  src={cardImage1}
+                  alt="Publique seus resíduos"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-black/30" />
+              </div>
+              <CardContent className="p-8 relative z-10">
+                <div className="flex items-center justify-center w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm mb-6">
+                  <MapPin className="h-8 w-8 text-white" />
                 </div>
-                <h3 className="text-2xl font-semibold mb-4">1. Publique seus Resíduos</h3>
-                <p className="text-muted-foreground">
+                <h3 className="text-2xl font-semibold mb-4 text-white">1. Publique seus Resíduos</h3>
+                <p className="text-white/90">
                   Tire uma foto dos seus recicláveis, adicione detalhes e publique na plataforma para que recicladores próximos vejam
                 </p>
               </CardContent>
             </Card>
 
-            <Card className="hover-elevate">
-              <CardContent className="p-8">
-                <div className="flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-6">
-                  <Users className="h-8 w-8 text-primary" />
+            <Card className="hover-elevate overflow-hidden relative">
+              <div className="absolute inset-0">
+                <img
+                  src={cardImage2}
+                  alt="Conecte-se com recicladores"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-black/30" />
+              </div>
+              <CardContent className="p-8 relative z-10">
+                <div className="flex items-center justify-center w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm mb-6">
+                  <Users className="h-8 w-8 text-white" />
                 </div>
-                <h3 className="text-2xl font-semibold mb-4">2. Conecte-se com Recicladores</h3>
-                <p className="text-muted-foreground">
+                <h3 className="text-2xl font-semibold mb-4 text-white">2. Conecte-se com Recicladores</h3>
+                <p className="text-white/90">
                   Recicladores profissionais aceitam seus pedidos e agendam a recolha de forma rápida e conveniente
                 </p>
               </CardContent>
             </Card>
 
-            <Card className="hover-elevate">
-              <CardContent className="p-8">
-                <div className="flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-6">
-                  <Award className="h-8 w-8 text-primary" />
+            <Card className="hover-elevate overflow-hidden relative">
+              <div className="absolute inset-0">
+                <img
+                  src={cardImage3}
+                  alt="Ganhe pontos e recompensas"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-black/30" />
+              </div>
+              <CardContent className="p-8 relative z-10">
+                <div className="flex items-center justify-center w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm mb-6">
+                  <Award className="h-8 w-8 text-white" />
                 </div>
-                <h3 className="text-2xl font-semibold mb-4">3. Ganhe Pontos e Recompensas</h3>
-                <p className="text-muted-foreground">
+                <h3 className="text-2xl font-semibold mb-4 text-white">3. Ganhe Pontos e Recompensas</h3>
+                <p className="text-white/90">
                   Acumule pontos por cada recolha concluída e troque por prémios ou dinheiro
                 </p>
               </CardContent>
