@@ -19,6 +19,7 @@ import cardImage2 from "@assets/stock_images/people_working_toget_e1e22104.jpg";
 import cardImage3 from "@assets/stock_images/rewards_prizes_money_5dfcdf13.jpg";
 import generatorBgImage from "@assets/stock_images/person_sorting_recyc_c62d4a9b.jpg";
 import ctaBackgroundImage from "@assets/stock_images/recycling_sustainabi_076cfd4e.jpg";
+import recyclerBgImage from "@assets/stock_images/recycling_workers_co_8e8551af.jpg";
 
 const heroImages = [
   heroImage1,
@@ -285,41 +286,47 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-20 bg-background">
-        <div className="container mx-auto px-4 max-w-7xl">
+      <section className="relative py-20 overflow-hidden">
+        <div 
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: `url(${recyclerBgImage})` }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-black/60 to-black/70" />
+        
+        <div className="container mx-auto px-4 max-w-7xl relative z-10">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
               Para Recicladores
             </h2>
-            <p className="text-lg text-muted-foreground mb-8">
+            <p className="text-lg text-white/90 mb-8">
               Encontre oportunidades de recolha próximas, otimize suas rotas e aumente sua receita. Nossa plataforma conecta você diretamente com quem tem resíduos para reciclar.
             </p>
             <ul className="space-y-4 mb-8">
               <li className="flex items-start gap-3">
-                <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary/10 mt-0.5">
-                  <MapPin className="h-4 w-4 text-primary" />
+                <div className="flex items-center justify-center w-6 h-6 rounded-full bg-white/20 mt-0.5">
+                  <MapPin className="h-4 w-4 text-white" />
                 </div>
                 <div>
-                  <h4 className="font-semibold mb-1">Encontre Recolhas Próximas</h4>
-                  <p className="text-muted-foreground">Veja pedidos na sua área em tempo real</p>
+                  <h4 className="font-semibold mb-1 text-white">Encontre Recolhas Próximas</h4>
+                  <p className="text-white/80">Veja pedidos na sua área em tempo real</p>
                 </div>
               </li>
               <li className="flex items-start gap-3">
-                <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary/10 mt-0.5">
-                  <TrendingUp className="h-4 w-4 text-primary" />
+                <div className="flex items-center justify-center w-6 h-6 rounded-full bg-white/20 mt-0.5">
+                  <TrendingUp className="h-4 w-4 text-white" />
                 </div>
                 <div>
-                  <h4 className="font-semibold mb-1">Aumente sua Receita</h4>
-                  <p className="text-muted-foreground">Mais recolhas, mais lucro</p>
+                  <h4 className="font-semibold mb-1 text-white">Aumente sua Receita</h4>
+                  <p className="text-white/80">Mais recolhas, mais lucro</p>
                 </div>
               </li>
               <li className="flex items-start gap-3">
-                <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary/10 mt-0.5">
-                  <Users className="h-4 w-4 text-primary" />
+                <div className="flex items-center justify-center w-6 h-6 rounded-full bg-white/20 mt-0.5">
+                  <Users className="h-4 w-4 text-white" />
                 </div>
                 <div>
-                  <h4 className="font-semibold mb-1">Comunidade Ativa</h4>
-                  <p className="text-muted-foreground">Conecte-se com milhares de geradores</p>
+                  <h4 className="font-semibold mb-1 text-white">Comunidade Ativa</h4>
+                  <p className="text-white/80">Conecte-se com milhares de geradores</p>
                 </div>
               </li>
             </ul>
@@ -327,14 +334,15 @@ export default function Home() {
               <Button
                 size="lg"
                 onClick={() => setLocation("/register")}
+                className="bg-white/20 backdrop-blur-md border border-white/30 text-white hover:bg-white/30"
                 data-testid="button-recycler-register"
               >
                 Começar como Reciclador
               </Button>
               <Button
                 size="lg"
-                variant="outline"
                 onClick={() => setLocation("/explore-map")}
+                className="bg-white/10 backdrop-blur-md border border-white/30 text-white hover:bg-white/20"
                 data-testid="button-explore-map"
               >
                 <MapPin className="h-5 w-5 mr-2" />
