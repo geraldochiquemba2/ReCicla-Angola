@@ -120,7 +120,10 @@ export default function Collections() {
               <Button
                 variant={view === "map" ? "default" : "ghost"}
                 size="sm"
-                onClick={() => setView("map")}
+                onClick={() => {
+                  setView("map");
+                  setSelectedTab("disponivel");
+                }}
                 data-testid="button-view-map"
               >
                 <MapIcon className="h-4 w-4 mr-2" />
