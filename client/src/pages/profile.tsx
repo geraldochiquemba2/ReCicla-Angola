@@ -14,6 +14,7 @@ import { User, Mail, Phone, MapPin, Award, TrendingUp, Package, Leaf, TreePine, 
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import achievementImg from "@assets/generated_images/Achievement_celebration_graphic_b8f09fdd.png";
+import backgroundImg from "@assets/pexels-pixabay-414807_1763482394364.jpg";
 
 export default function Profile() {
   const { user } = useAuth();
@@ -39,10 +40,17 @@ export default function Profile() {
     : 0;
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
+    <div className="min-h-screen relative">
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-fixed"
+        style={{ backgroundImage: `url(${backgroundImg})` }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/60" />
+      
+      <div className="relative z-10">
+        <Header />
 
-      <main className="container mx-auto px-4 py-8 max-w-7xl">
+        <main className="container mx-auto px-4 py-8 max-w-7xl">
         {/* Profile Header */}
         <div className="mb-8">
           <Card>
@@ -289,6 +297,7 @@ export default function Profile() {
           </TabsContent>
         </Tabs>
       </main>
+      </div>
     </div>
   );
 }
