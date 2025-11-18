@@ -108,6 +108,15 @@ export default function Home() {
             </h1>
           </div>
           <div className="flex items-center gap-3">
+            <Button
+              variant="ghost"
+              onClick={() => setLocation("/explore-map")}
+              className={isScrolled ? "" : "text-white hover:bg-white/10"}
+              data-testid="button-explore-map-header"
+            >
+              <MapPin className="h-4 w-4 mr-2" />
+              Explorar Mapa
+            </Button>
             {isAuthenticated ? (
               <Button
                 onClick={() => setLocation("/dashboard")}
