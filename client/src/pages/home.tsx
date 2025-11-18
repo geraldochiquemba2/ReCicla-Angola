@@ -16,7 +16,7 @@ import heroImage8 from "@assets/stock_images/recycling_plastic_bo_2bce4b15.jpg";
 import cardImage1 from "@assets/stock_images/smartphone_taking_ph_42557168.jpg";
 import cardImage2 from "@assets/stock_images/people_working_toget_e1e22104.jpg";
 import cardImage3 from "@assets/stock_images/rewards_prizes_money_5dfcdf13.jpg";
-import generatorBgImage from "@assets/stock_images/person_sorting_recyc_c62d4a9b.jpg";
+import generatorBgVideo from "@assets/6894235-hd_1280_720_50fps_1763478733214.mp4";
 import ctaBackgroundImage from "@assets/stock_images/recycling_sustainabi_076cfd4e.jpg";
 import recyclerBgImage from "@assets/pexels-peaky-34418452_1763478228644.jpg";
 
@@ -255,11 +255,15 @@ export default function Home() {
 
       <section className="py-20 relative overflow-hidden">
         <div className="absolute inset-0">
-          <img
-            src={generatorBgImage}
-            alt="Geradores de resíduos"
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
             className="w-full h-full object-cover"
-          />
+          >
+            <source src={generatorBgVideo} type="video/mp4" />
+          </video>
           <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/70 to-black/60" />
         </div>
         
