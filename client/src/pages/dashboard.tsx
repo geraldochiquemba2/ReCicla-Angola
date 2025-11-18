@@ -39,7 +39,7 @@ export default function Dashboard() {
         className="fixed inset-0 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: `url(${dashboardBackground})` }}
       />
-      <div className="fixed inset-0 bg-background/90 dark:bg-background/95" />
+      <div className="fixed inset-0 bg-background/30 dark:bg-background/30" />
       
       <div className="relative z-10">
         <Header />
