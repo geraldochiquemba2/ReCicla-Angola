@@ -17,6 +17,11 @@ import { ZodError } from "zod";
 
 const JWT_SECRET = process.env.SESSION_SECRET || "recicla-angola-secret-key";
 
+// Normalize phone numbers for comparison (remove all spaces and special chars except +)
+function normalizePhone(phone: string): string {
+  return phone.replace(/\s/g, '').trim();
+}
+
 function createToken(userId: string): string {
   return jwt.sign({ userId }, JWT_SECRET, { expiresIn: "7d" });
 }
@@ -75,16 +80,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/auth/register", async (req, res) => {
     try {
       const data = insertUserSchema.parse(req.body);
+      const normalizedPhone = normalizePhone(data.phone);
 
-      // Check if phone already exists
-      const existingPhone = await storage.getUserByPhone(data.phone);
+      // Check if phone already exists (normalized comparison)
+      const allUsers = await storage.getAllUsers();
+      const existingPhone = allUsers.find(u => normalizePhone(u.phone) === normalizedPhone);
       if (existingPhone) {
         return res.status(400).json({ message: "Número de telefone já está registado" });
       }
 
       // Hash password before storing
       const hashedPassword = await hashPassword(data.password);
-      const user = await storage.createUser({ ...data, password: hashedPassword });
+      const user = await storage.createUser({ ...data, phone: normalizedPhone, password: hashedPassword });
       const token = createToken(user.id);
 
       res.json({ user: sanitizeUser(user), token });
@@ -99,8 +106,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/auth/login", async (req, res) => {
     try {
       const data = loginSchema.parse(req.body);
+      const normalizedPhone = normalizePhone(data.phone);
 
-      const user = await storage.getUserByPhone(data.phone);
+      // Find user with normalized phone comparison
+      const allUsers = await storage.getAllUsers();
+      const user = allUsers.find(u => normalizePhone(u.phone) === normalizedPhone);
+      
       if (!user) {
         return res.status(401).json({ message: "Credenciais inválidas" });
       }
