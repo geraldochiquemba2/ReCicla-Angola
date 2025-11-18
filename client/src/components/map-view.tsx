@@ -36,7 +36,10 @@ export function MapView({
   useEffect(() => {
     if (!mapContainerRef.current || mapRef.current) return;
 
-    const map = L.map(mapContainerRef.current).setView(center, zoom);
+    const map = L.map(mapContainerRef.current, {
+      maxZoom: 18,
+      minZoom: 3,
+    }).setView(center, zoom);
 
     // Satellite imagery layer
     L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
