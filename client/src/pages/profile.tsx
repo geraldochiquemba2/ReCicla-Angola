@@ -43,10 +43,8 @@ function EditProfileDialog({ user }: { user: any }) {
 
   const updateProfileMutation = useMutation({
     mutationFn: async (data: UpdateProfile) => {
-      return await apiRequest("/api/user/profile", {
-        method: "PUT",
-        body: JSON.stringify(data),
-      });
+      const res = await apiRequest("PUT", "/api/user/profile", data);
+      return await res.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/user"] });
