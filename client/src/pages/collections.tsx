@@ -201,10 +201,10 @@ export default function Collections() {
             ) : filteredCollections.length > 0 ? (
               <>
                 {view === "map" ? (
-                  <div className="px-2">
+                  <div className="flex justify-center">
                     <MapView
                       collections={filteredCollections}
-                      className="h-[600px] w-full rounded-xl border"
+                      className="h-[600px] w-full max-w-5xl rounded-xl border"
                       userLocation={
                         user?.latitude && user?.longitude
                           ? [parseFloat(user.latitude), parseFloat(user.longitude)]
