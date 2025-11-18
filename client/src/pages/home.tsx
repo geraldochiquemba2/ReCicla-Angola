@@ -322,13 +322,24 @@ export default function Home() {
                 </div>
               </li>
             </ul>
-            <Button
-              size="lg"
-              onClick={() => setLocation("/register")}
-              data-testid="button-recycler-register"
-            >
-              Começar como Reciclador
-            </Button>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Button
+                size="lg"
+                onClick={() => setLocation("/register")}
+                data-testid="button-recycler-register"
+              >
+                Começar como Reciclador
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                onClick={() => setLocation("/collections")}
+                data-testid="button-explore-map"
+              >
+                <MapPin className="h-5 w-5 mr-2" />
+                Explorar Mapa
+              </Button>
+            </div>
           </div>
         </div>
       </section>
