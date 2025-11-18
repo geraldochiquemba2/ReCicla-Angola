@@ -228,28 +228,39 @@ export default function ExploreMap() {
                           className="p-3 rounded-lg border hover-elevate cursor-pointer"
                           data-testid={`collection-${collection.id}`}
                         >
-                          <div className="flex items-start justify-between mb-2">
-                            <h4 className="font-semibold text-sm">
-                              {getWasteTypeLabel(collection.wasteType)}
-                            </h4>
-                            <Badge
-                              variant={collection.status === "disponivel" ? "default" : "secondary"}
-                            >
-                              {collection.status}
-                            </Badge>
+                          <div className="flex gap-3">
+                            {collection.photoUrl && (
+                              <img
+                                src={collection.photoUrl}
+                                alt={getWasteTypeLabel(collection.wasteType)}
+                                className="w-16 h-16 rounded-lg object-cover flex-shrink-0"
+                              />
+                            )}
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-start justify-between mb-2">
+                                <h4 className="font-semibold text-sm">
+                                  {getWasteTypeLabel(collection.wasteType)}
+                                </h4>
+                                <Badge
+                                  variant={collection.status === "disponivel" ? "default" : "secondary"}
+                                >
+                                  {collection.status}
+                                </Badge>
+                              </div>
+                              <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                                <MapPin className="h-3 w-3" />
+                                <span>{collection.address}</span>
+                              </div>
+                              <p className="text-xs text-muted-foreground mt-1">
+                                {collection.quantity} kg
+                              </p>
+                              {collection.pointsGenerated > 0 && (
+                                <p className="text-xs font-semibold text-primary mt-1">
+                                  {collection.pointsGenerated} pontos
+                                </p>
+                              )}
+                            </div>
                           </div>
-                          <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                            <MapPin className="h-3 w-3" />
-                            <span>{collection.address}</span>
-                          </div>
-                          <p className="text-xs text-muted-foreground mt-1">
-                            {collection.quantity} kg
-                          </p>
-                          {collection.pointsGenerated > 0 && (
-                            <p className="text-xs font-semibold text-primary mt-1">
-                              {collection.pointsGenerated} pontos
-                            </p>
-                          )}
                         </div>
                       ))}
                     </div>
