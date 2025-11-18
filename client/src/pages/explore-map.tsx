@@ -67,21 +67,6 @@ export default function ExploreMap() {
             <ArrowLeft className="h-5 w-5 mr-2" />
             Voltar
           </Button>
-          <div className="flex items-center gap-3">
-            <Button
-              variant="ghost"
-              onClick={() => setLocation("/login")}
-              data-testid="button-login"
-            >
-              Entrar
-            </Button>
-            <Button
-              onClick={() => setLocation("/register")}
-              data-testid="button-register"
-            >
-              Registar-se
-            </Button>
-          </div>
         </div>
       </header>
 
@@ -136,15 +121,6 @@ export default function ExploreMap() {
                         >
                           <div className="w-3 h-3 rounded-full bg-green-500 mr-2" />
                           Disponíveis ({availableCount})
-                        </Button>
-                        <Button
-                          variant={selectedStatus === "aceito" ? "default" : "outline"}
-                          className="w-full justify-start"
-                          onClick={() => setSelectedStatus("aceito")}
-                          data-testid="filter-accepted"
-                        >
-                          <div className="w-3 h-3 rounded-full bg-orange-500 mr-2" />
-                          Aceitos ({collections.filter(c => c.status === "aceito").length})
                         </Button>
                       </div>
                     </div>
@@ -236,10 +212,6 @@ export default function ExploreMap() {
                     <div className="flex items-center gap-2">
                       <div className="w-4 h-4 rounded-full bg-orange-500" />
                       <span>Já aceito por reciclador</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="w-4 h-4 rounded-full bg-gray-500" />
-                      <span>Concluído ou cancelado</span>
                     </div>
                   </div>
                 </CardContent>
