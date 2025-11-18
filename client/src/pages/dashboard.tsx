@@ -10,6 +10,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/lib/auth";
 import type { CollectionWithUsers, UserStats } from "@shared/schema";
 import { Package, Leaf, Award, TrendingUp, Plus, ArrowRight } from "lucide-react";
+import statsBackground1 from "@assets/stock_images/recycling_bins_waste_b9da8572.jpg";
+import statsBackground2 from "@assets/stock_images/recycling_bins_waste_29917863.jpg";
+import statsBackground3 from "@assets/stock_images/recycling_bins_waste_d7189b05.jpg";
+import statsBackground4 from "@assets/stock_images/recycling_bins_waste_dfcca984.jpg";
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -60,24 +64,28 @@ export default function Dashboard() {
                 value={stats?.totalPoints || 0}
                 subtitle={`≈ ${((stats?.totalPoints || 0) * 100).toLocaleString()} Kz`}
                 icon={Award}
+                backgroundImage={statsBackground1}
               />
               <StatsCard
                 title="Resíduos Reciclados"
                 value={`${stats?.totalRecycled || 0} kg`}
                 subtitle="Total acumulado"
                 icon={Leaf}
+                backgroundImage={statsBackground2}
               />
               <StatsCard
                 title="Recolhas Totais"
                 value={stats?.totalCollections || 0}
                 subtitle={`${stats?.completedCollections || 0} concluídas`}
                 icon={Package}
+                backgroundImage={statsBackground3}
               />
               <StatsCard
                 title="CO₂ Evitado"
                 value={`${stats?.environmentalImpact?.co2Saved || 0} kg`}
                 subtitle="Impacto ambiental"
                 icon={TrendingUp}
+                backgroundImage={statsBackground4}
               />
             </>
           )}

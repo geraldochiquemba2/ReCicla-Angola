@@ -1,3 +1,4 @@
+// Referenced from blueprint:javascript_database
 import type {
   User,
   InsertUser,
@@ -8,7 +9,9 @@ import type {
   UserStats,
   CollectionWithUsers,
 } from "@shared/schema";
-import { randomUUID } from "crypto";
+import { users, collections, pointTransactions } from "@shared/schema";
+import { db } from "./db";
+import { eq, desc, sql } from "drizzle-orm";
 
 export interface IStorage {
   // Users
@@ -38,140 +41,101 @@ export interface IStorage {
   getUserStats(userId: string): Promise<UserStats>;
 }
 
-export class MemStorage implements IStorage {
-  private users: Map<string, User>;
-  private collections: Map<string, Collection>;
-  private pointTransactions: Map<string, PointTransaction>;
-
-  constructor() {
-    this.users = new Map();
-    this.collections = new Map();
-    this.pointTransactions = new Map();
-  }
-
+// DatabaseStorage implements IStorage using PostgreSQL via Drizzle ORM
+// Referenced from blueprint:javascript_database
+export class DatabaseStorage implements IStorage {
   // Users
   async getUser(id: string): Promise<User | undefined> {
-    return this.users.get(id);
+    const [user] = await db.select().from(users).where(eq(users.id, id));
+    return user || undefined;
   }
 
   async getAllUsers(): Promise<User[]> {
-    return Array.from(this.users.values());
+    return await db.select().from(users);
   }
 
   async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.username === username,
-    );
+    const [user] = await db.select().from(users).where(eq(users.username, username));
+    return user || undefined;
   }
 
   async getUserByEmail(email: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.email === email,
-    );
+    const [user] = await db.select().from(users).where(eq(users.email, email));
+    return user || undefined;
   }
 
   async getUserByPhone(phone: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.phone === phone,
-    );
+    const [user] = await db.select().from(users).where(eq(users.phone, phone));
+    return user || undefined;
   }
 
   async createUser(insertUser: InsertUser): Promise<User> {
-    const id = randomUUID();
-    const user: User = {
-      id,
-      username: null,
-      password: insertUser.password,
-      userType: insertUser.userType,
-      fullName: insertUser.fullName,
-      email: null,
-      phone: insertUser.phone,
-      address: insertUser.address ?? null,
-      latitude: insertUser.latitude ?? null,
-      longitude: insertUser.longitude ?? null,
-      points: 0,
-      totalRecycled: "0",
-      createdAt: new Date(),
-    };
-    this.users.set(id, user);
+    const [user] = await db
+      .insert(users)
+      .values(insertUser)
+      .returning();
     return user;
   }
 
   async updateUserPoints(id: string, points: number): Promise<User | undefined> {
-    const user = this.users.get(id);
-    if (!user) return undefined;
-
-    const updatedUser = { ...user, points: user.points + points };
-    this.users.set(id, updatedUser);
-    return updatedUser;
+    const [user] = await db
+      .update(users)
+      .set({ points: sql`${users.points} + ${points}` })
+      .where(eq(users.id, id))
+      .returning();
+    return user || undefined;
   }
 
   async updateUserRecycled(id: string, amount: number): Promise<User | undefined> {
-    const user = this.users.get(id);
-    if (!user) return undefined;
-
-    const currentRecycled = parseFloat(user.totalRecycled || "0");
-    const updatedUser = {
-      ...user,
-      totalRecycled: (currentRecycled + amount).toFixed(2),
-    };
-    this.users.set(id, updatedUser);
-    return updatedUser;
+    const [user] = await db
+      .update(users)
+      .set({ totalRecycled: sql`CAST(CAST(${users.totalRecycled} AS DECIMAL) + ${amount} AS TEXT)` })
+      .where(eq(users.id, id))
+      .returning();
+    return user || undefined;
   }
 
   // Collections
   async getCollection(id: string): Promise<Collection | undefined> {
-    return this.collections.get(id);
+    const [collection] = await db.select().from(collections).where(eq(collections.id, id));
+    return collection || undefined;
   }
 
   async getCollections(): Promise<Collection[]> {
-    return Array.from(this.collections.values()).sort(
-      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    );
+    return await db.select().from(collections).orderBy(desc(collections.createdAt));
   }
 
   async getAllCollections(): Promise<Collection[]> {
-    return Array.from(this.collections.values());
+    return await db.select().from(collections);
   }
 
   async getCollectionsByGenerator(generatorId: string): Promise<Collection[]> {
-    return Array.from(this.collections.values())
-      .filter((c) => c.generatorId === generatorId)
-      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    return await db
+      .select()
+      .from(collections)
+      .where(eq(collections.generatorId, generatorId))
+      .orderBy(desc(collections.createdAt));
   }
 
   async getCollectionsByRecycler(recyclerId: string): Promise<Collection[]> {
-    return Array.from(this.collections.values())
-      .filter((c) => c.recyclerId === recyclerId)
-      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    return await db
+      .select()
+      .from(collections)
+      .where(eq(collections.recyclerId, recyclerId))
+      .orderBy(desc(collections.createdAt));
   }
 
   async createCollection(insertCollection: InsertCollection): Promise<Collection> {
-    const id = randomUUID();
-    
-    // Calculate points based on quantity (10 points per kg)
     const quantity = parseFloat(insertCollection.quantity);
     const pointsGenerated = Math.ceil(quantity * 10);
 
-    const collection: Collection = {
-      id,
-      generatorId: insertCollection.generatorId,
-      wasteType: insertCollection.wasteType,
-      quantity: insertCollection.quantity,
-      description: insertCollection.description ?? null,
-      photoUrl: insertCollection.photoUrl ?? null,
-      address: insertCollection.address,
-      latitude: insertCollection.latitude,
-      longitude: insertCollection.longitude,
-      status: "disponivel",
-      recyclerId: null,
-      pointsGenerated,
-      createdAt: new Date(),
-      acceptedAt: null,
-      completedAt: null,
-    };
-
-    this.collections.set(id, collection);
+    const [collection] = await db
+      .insert(collections)
+      .values({
+        ...insertCollection,
+        pointsGenerated,
+      })
+      .returning();
     return collection;
   }
 
@@ -179,36 +143,30 @@ export class MemStorage implements IStorage {
     id: string,
     updates: Partial<Collection>
   ): Promise<Collection | undefined> {
-    const collection = this.collections.get(id);
-    if (!collection) return undefined;
-
-    const updatedCollection = { ...collection, ...updates };
-    this.collections.set(id, updatedCollection);
-    return updatedCollection;
+    const [collection] = await db
+      .update(collections)
+      .set(updates)
+      .where(eq(collections.id, id))
+      .returning();
+    return collection || undefined;
   }
 
   // Point Transactions
   async getPointTransactions(userId: string): Promise<PointTransaction[]> {
-    return Array.from(this.pointTransactions.values())
-      .filter((t) => t.userId === userId)
-      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    return await db
+      .select()
+      .from(pointTransactions)
+      .where(eq(pointTransactions.userId, userId))
+      .orderBy(desc(pointTransactions.createdAt));
   }
 
   async createPointTransaction(
     insertTransaction: InsertPointTransaction
   ): Promise<PointTransaction> {
-    const id = randomUUID();
-    const transaction: PointTransaction = {
-      id,
-      userId: insertTransaction.userId,
-      type: insertTransaction.type,
-      points: insertTransaction.points,
-      description: insertTransaction.description,
-      collectionId: insertTransaction.collectionId ?? null,
-      createdAt: new Date(),
-    };
-
-    this.pointTransactions.set(id, transaction);
+    const [transaction] = await db
+      .insert(pointTransactions)
+      .values(insertTransaction)
+      .returning();
     return transaction;
   }
 
@@ -230,17 +188,13 @@ export class MemStorage implements IStorage {
       };
     }
 
-    const collections = user.userType === "gerador"
+    const userCollections = user.userType === "gerador"
       ? await this.getCollectionsByGenerator(userId)
       : await this.getCollectionsByRecycler(userId);
 
-    const completedCollections = collections.filter((c) => c.status === "concluido");
+    const completedCollections = userCollections.filter((c) => c.status === "concluido");
     const totalRecycled = parseFloat(user.totalRecycled || "0");
 
-    // Calculate environmental impact
-    // 1 kg of recyclables = ~2 kg CO2 saved
-    // 1 tree absorbs ~21 kg CO2 per year
-    // 1 kg of recyclables = ~5 kWh energy saved
     const co2Saved = Math.round(totalRecycled * 2);
     const treesEquivalent = Math.round((co2Saved / 21) * 10) / 10;
     const energySaved = Math.round(totalRecycled * 5);
@@ -248,9 +202,9 @@ export class MemStorage implements IStorage {
     return {
       totalPoints: user.points,
       totalRecycled,
-      totalCollections: collections.length,
+      totalCollections: userCollections.length,
       completedCollections: completedCollections.length,
-      availableCollections: collections.filter((c) => c.status === "disponivel").length,
+      availableCollections: userCollections.filter((c) => c.status === "disponivel").length,
       environmentalImpact: {
         co2Saved,
         treesEquivalent,
@@ -260,4 +214,4 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new MemStorage();
+export const storage = new DatabaseStorage();

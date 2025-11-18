@@ -17,9 +17,17 @@ import { ZodError } from "zod";
 
 const JWT_SECRET = process.env.SESSION_SECRET || "recicla-angola-secret-key";
 
-// Normalize phone numbers for comparison (remove all spaces and special chars except +)
+// Normalize phone numbers to canonical format: +244XXXXXXXXX
+// This ensures all Angolan numbers are stored consistently
 function normalizePhone(phone: string): string {
-  return phone.replace(/\s/g, '').trim();
+  const digits = phone.replace(/\D/g, ''); // Remove all non-digits
+  
+  // If starts with 244, prepend +, otherwise prepend +244
+  if (digits.startsWith('244')) {
+    return '+' + digits;
+  } else {
+    return '+244' + digits;
+  }
 }
 
 function createToken(userId: string): string {

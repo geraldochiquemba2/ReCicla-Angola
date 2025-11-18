@@ -1,4 +1,4 @@
-import { sql } from "drizzle-orm";
+import { sql, relations } from "drizzle-orm";
 import { pgTable, text, varchar, integer, timestamp, decimal, boolean } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
@@ -35,7 +35,7 @@ export const users = pgTable("users", {
 // Tabela de Pedidos de Recolha
 export const collections = pgTable("collections", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  generatorId: varchar("generator_id").notNull(), // quem criou o pedido
+  generatorId: varchar("generator_id").notNull().references(() => users.id), // quem criou o pedido
   wasteType: text("waste_type").notNull().$type<WasteType>(),
   quantity: decimal("quantity", { precision: 10, scale: 2 }).notNull(), // em kg
   description: text("description"),
@@ -44,7 +44,7 @@ export const collections = pgTable("collections", {
   latitude: decimal("latitude", { precision: 10, scale: 8 }).notNull(),
   longitude: decimal("longitude", { precision: 11, scale: 8 }).notNull(),
   status: text("status").notNull().$type<CollectionStatus>().default("disponivel"),
-  recyclerId: varchar("recycler_id"), // quem aceitou
+  recyclerId: varchar("recycler_id").references(() => users.id), // quem aceitou
   pointsGenerated: integer("points_generated").notNull().default(0),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   acceptedAt: timestamp("accepted_at"),
@@ -54,13 +54,44 @@ export const collections = pgTable("collections", {
 // Tabela de Transações de Pontos
 export const pointTransactions = pgTable("point_transactions", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  userId: varchar("user_id").notNull(),
+  userId: varchar("user_id").notNull().references(() => users.id),
   type: text("type").notNull().$type<TransactionType>(),
   points: integer("points").notNull(),
   description: text("description").notNull(),
-  collectionId: varchar("collection_id"), // referência opcional à recolha
+  collectionId: varchar("collection_id").references(() => collections.id), // referência opcional à recolha
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
+
+// Drizzle Relations (referenced from blueprint:javascript_database)
+export const usersRelations = relations(users, ({ many }) => ({
+  generatedCollections: many(collections, { relationName: "generator" }),
+  acceptedCollections: many(collections, { relationName: "recycler" }),
+  pointTransactions: many(pointTransactions),
+}));
+
+export const collectionsRelations = relations(collections, ({ one }) => ({
+  generator: one(users, {
+    fields: [collections.generatorId],
+    references: [users.id],
+    relationName: "generator",
+  }),
+  recycler: one(users, {
+    fields: [collections.recyclerId],
+    references: [users.id],
+    relationName: "recycler",
+  }),
+}));
+
+export const pointTransactionsRelations = relations(pointTransactions, ({ one }) => ({
+  user: one(users, {
+    fields: [pointTransactions.userId],
+    references: [users.id],
+  }),
+  collection: one(collections, {
+    fields: [pointTransactions.collectionId],
+    references: [collections.id],
+  }),
+}));
 
 // Schemas de inserção
 export const insertUserSchema = createInsertSchema(users, {

@@ -10,12 +10,19 @@ interface StatsCardProps {
     value: number;
     label: string;
   };
+  backgroundImage?: string;
 }
 
-export function StatsCard({ title, value, subtitle, icon: Icon, trend }: StatsCardProps) {
+export function StatsCard({ title, value, subtitle, icon: Icon, trend, backgroundImage }: StatsCardProps) {
   return (
-    <Card className="hover-elevate transition-all duration-300">
-      <CardContent className="p-6">
+    <Card className="hover-elevate transition-all duration-300 overflow-hidden relative">
+      {backgroundImage && (
+        <div 
+          className="absolute inset-0 bg-cover bg-center opacity-20"
+          style={{ backgroundImage: `url(${backgroundImage})` }}
+        />
+      )}
+      <CardContent className="p-6 relative z-10">
         <div className="flex items-center justify-between">
           <div className="flex-1">
             <p className="text-sm font-medium text-muted-foreground">{title}</p>
@@ -33,7 +40,7 @@ export function StatsCard({ title, value, subtitle, icon: Icon, trend }: StatsCa
             )}
           </div>
           <div className="ml-4">
-            <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
+            <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center backdrop-blur-sm">
               <Icon className="h-6 w-6 text-primary" />
             </div>
           </div>
