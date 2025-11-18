@@ -93,12 +93,14 @@ export default function Home() {
             loop
             muted
             playsInline
-            preload="auto"
+            preload="metadata"
             className="absolute inset-0 w-full h-full object-cover"
             style={{ 
-              filter: 'brightness(0.85)',
+              filter: 'brightness(0.7) blur(1px)',
+              transform: 'scale(1.05)',
               width: '100%',
-              height: '100%'
+              height: '100%',
+              imageRendering: 'crisp-edges'
             }}
           >
             <source src={heroVideo} type="video/mp4" />
