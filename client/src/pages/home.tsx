@@ -19,7 +19,7 @@ import cardImage2 from "@assets/stock_images/people_working_toget_e1e22104.jpg";
 import cardImage3 from "@assets/stock_images/rewards_prizes_money_5dfcdf13.jpg";
 import generatorBgImage from "@assets/stock_images/person_sorting_recyc_c62d4a9b.jpg";
 import ctaBackgroundImage from "@assets/stock_images/recycling_sustainabi_076cfd4e.jpg";
-import recyclerBgImage from "@assets/stock_images/recycling_center_wor_fbf6f9bc.jpg";
+import recyclerBgImage from "@assets/stock_images/modern_city_truck_de_cea0115d.jpg";
 
 const heroImages = [
   heroImage1,
