@@ -290,6 +290,60 @@ export default function NewCollection() {
                         </FormItem>
                       )}
                     />
+
+                    <div>
+                      <FormLabel className="flex items-center gap-2 mb-2">
+                        <Image className="h-4 w-4" />
+                        Foto do Resíduo (opcional)
+                      </FormLabel>
+                      
+                      {!photoPreview ? (
+                        <div>
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handlePhotoChange}
+                            className="hidden"
+                            id="photo-upload"
+                            data-testid="input-photo-upload"
+                          />
+                          <label 
+                            htmlFor="photo-upload" 
+                            className="block border-2 border-dashed rounded-lg p-8 text-center hover-elevate active-elevate-2 cursor-pointer"
+                          >
+                            <Upload className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+                            <p className="text-sm text-muted-foreground mb-2">
+                              Clique para fazer upload de uma foto
+                            </p>
+                            <p className="text-xs text-muted-foreground">
+                              PNG, JPG até 10MB
+                            </p>
+                          </label>
+                        </div>
+                      ) : (
+                        <div className="relative rounded-lg overflow-hidden border">
+                          <img
+                            src={photoPreview}
+                            alt="Preview"
+                            className="w-full h-64 object-cover"
+                          />
+                          <Button
+                            type="button"
+                            size="icon"
+                            variant="destructive"
+                            className="absolute top-2 right-2"
+                            onClick={removePhoto}
+                            data-testid="button-remove-photo"
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      )}
+                      
+                      <p className="text-sm text-muted-foreground mt-2">
+                        Adicione uma foto para ajudar os recicladores a identificar o resíduo
+                      </p>
+                    </div>
                   </div>
                 )}
 
@@ -382,63 +436,9 @@ export default function NewCollection() {
                   </div>
                 )}
 
-                {/* Step 3: Foto (opcional) */}
+                {/* Step 3: Resumo */}
                 {step === 3 && (
                   <div className="space-y-6">
-                    <div>
-                      <FormLabel className="flex items-center gap-2 mb-2">
-                        <Image className="h-4 w-4" />
-                        Foto do Resíduo (opcional)
-                      </FormLabel>
-                      
-                      {!photoPreview ? (
-                        <div>
-                          <input
-                            type="file"
-                            accept="image/*"
-                            onChange={handlePhotoChange}
-                            className="hidden"
-                            id="photo-upload"
-                            data-testid="input-photo-upload"
-                          />
-                          <label 
-                            htmlFor="photo-upload" 
-                            className="block border-2 border-dashed rounded-lg p-8 text-center hover-elevate active-elevate-2 cursor-pointer"
-                          >
-                            <Upload className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                            <p className="text-sm text-muted-foreground mb-2">
-                              Clique para fazer upload de uma foto
-                            </p>
-                            <p className="text-xs text-muted-foreground">
-                              PNG, JPG até 10MB
-                            </p>
-                          </label>
-                        </div>
-                      ) : (
-                        <div className="relative rounded-lg overflow-hidden border">
-                          <img
-                            src={photoPreview}
-                            alt="Preview"
-                            className="w-full h-64 object-cover"
-                          />
-                          <Button
-                            type="button"
-                            size="icon"
-                            variant="destructive"
-                            className="absolute top-2 right-2"
-                            onClick={removePhoto}
-                            data-testid="button-remove-photo"
-                          >
-                            <X className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      )}
-                      
-                      <p className="text-sm text-muted-foreground mt-2">
-                        Adicione uma foto para ajudar os recicladores a identificar o resíduo
-                      </p>
-                    </div>
-
                     {/* Summary */}
                     <div className="p-6 bg-primary/10 rounded-lg space-y-3">
                       <h3 className="font-semibold mb-3">Resumo da Recolha</h3>
@@ -460,6 +460,16 @@ export default function NewCollection() {
                             {form.watch("address")}
                           </span>
                         </div>
+                        {photoPreview && (
+                          <div className="pt-2 border-t">
+                            <span className="text-muted-foreground block mb-2">Foto:</span>
+                            <img
+                              src={photoPreview}
+                              alt="Preview do resíduo"
+                              className="w-full h-48 object-cover rounded-lg"
+                            />
+                          </div>
+                        )}
                         <div className="flex justify-between items-center pt-2 border-t">
                           <span className="text-muted-foreground">Pontos estimados:</span>
                           <span className="font-bold text-primary text-lg">
