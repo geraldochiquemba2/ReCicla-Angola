@@ -13,6 +13,7 @@ import { insertUserSchema, type InsertUser } from "@shared/schema";
 import { ArrowLeft } from "lucide-react";
 import logoIcon from "@assets/generated_images/ReCicla+_app_logo_icon_c8ba0c8a.png";
 import heroImg from "@assets/generated_images/Hero_background_environmental_impact_b855236c.png";
+import registerBgImg from "@assets/stock_images/people_recycling_pla_ca7df6ad.jpg";
 
 export default function Register() {
   const [, setLocation] = useLocation();
@@ -105,9 +106,16 @@ export default function Register() {
       </div>
 
       {/* Right side - Register Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8">
-        <div className="w-full max-w-md">
-          <Card className="border-none shadow-none lg:border lg:shadow-sm">
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 relative overflow-hidden">
+        <div className="absolute inset-0">
+          <img
+            src={registerBgImg}
+            alt="Pessoas reciclando"
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <div className="w-full max-w-md relative z-10">
+          <Card className="border-none shadow-none lg:border lg:shadow-lg bg-background/40 backdrop-blur-xl">
             <CardHeader className="space-y-1">
               <div className="flex items-center gap-2 mb-4 lg:hidden">
                 <img src={logoIcon} alt="ReCicla+" className="h-8 w-8" />
