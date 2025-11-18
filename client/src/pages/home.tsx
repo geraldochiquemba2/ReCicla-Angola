@@ -333,53 +333,6 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-20 relative overflow-hidden">
-        <div className="absolute inset-0">
-          <img
-            src={natureImage}
-            alt="Ambiente limpo"
-            className="w-full h-full object-cover"
-          />
-        </div>
-
-        <div className="relative z-10 container mx-auto px-4 max-w-7xl">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-              Nosso Impacto em Angola
-            </h2>
-            <p className="text-lg text-white/90 max-w-2xl mx-auto">
-              Juntos estamos criando um futuro mais sustentável
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <Card className="bg-white/10 backdrop-blur-md border-white/20">
-              <CardContent className="p-8 text-center">
-                <Recycle className="h-12 w-12 text-white mx-auto mb-4" />
-                <div className="text-4xl font-bold text-white mb-2">2.5 Ton</div>
-                <div className="text-white/80">Plástico Reciclado</div>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-white/10 backdrop-blur-md border-white/20">
-              <CardContent className="p-8 text-center">
-                <Leaf className="h-12 w-12 text-white mx-auto mb-4" />
-                <div className="text-4xl font-bold text-white mb-2">15k</div>
-                <div className="text-white/80">Árvores Salvas</div>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-white/10 backdrop-blur-md border-white/20">
-              <CardContent className="p-8 text-center">
-                <Award className="h-12 w-12 text-white mx-auto mb-4" />
-                <div className="text-4xl font-bold text-white mb-2">500k</div>
-                <div className="text-white/80">Pontos Distribuídos</div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
-
       <section className="py-20 bg-primary text-primary-foreground">
         <div className="container mx-auto px-4 max-w-4xl text-center">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
