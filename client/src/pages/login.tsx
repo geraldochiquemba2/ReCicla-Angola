@@ -28,13 +28,26 @@ export default function Login() {
     },
   });
 
+  const normalizePhone = (phone: string): string => {
+    const cleaned = phone.trim();
+    if (!cleaned.startsWith('+')) {
+      return `+244 ${cleaned}`;
+    }
+    return cleaned;
+  };
+
   const onSubmit = async (data: LoginData) => {
     setIsLoading(true);
     try {
+      const normalizedData = {
+        ...data,
+        phone: normalizePhone(data.phone),
+      };
+      
       const response = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify(normalizedData),
       });
 
       if (!response.ok) {
@@ -144,12 +157,13 @@ export default function Login() {
                       <FormLabel>Número de telefone</FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="+244 923 456 789"
+                          placeholder="923 456 789"
                           {...field}
                           data-testid="input-phone"
                           disabled={isLoading}
                         />
                       </FormControl>
+                      <p className="text-xs text-muted-foreground">O código +244 será adicionado automaticamente</p>
                       <FormMessage />
                     </FormItem>
                   )}
