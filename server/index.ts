@@ -46,22 +46,31 @@ app.use((req, res, next) => {
   next();
 });
 
-// Keep-alive function para evitar hibernação
+// Keep-alive function para evitar hibernação no Render
 function setupKeepAlive(port: number) {
   const interval = 14 * 60 * 1000; // 14 minutos
   
+  // Detectar URL baseado no ambiente
+  const baseUrl = process.env.RENDER_EXTERNAL_URL 
+    ? `${process.env.RENDER_EXTERNAL_URL}/api/health`
+    : `http://localhost:${port}/api/health`;
+  
   setInterval(async () => {
     try {
-      const response = await fetch(`http://localhost:${port}/api/health`);
+      const response = await fetch(baseUrl);
       if (response.ok) {
-        log(`Keep-alive ping successful at ${new Date().toISOString()}`);
+        log(`✓ Keep-alive ping bem-sucedido: ${new Date().toLocaleString('pt-PT')}`);
+      } else {
+        log(`⚠ Keep-alive ping retornou status ${response.status}`);
       }
     } catch (error) {
-      log(`Keep-alive ping failed: ${error}`);
+      log(`✗ Keep-alive ping falhou: ${error instanceof Error ? error.message : error}`);
     }
   }, interval);
   
-  log(`Keep-alive system initialized (ping every ${interval / 1000 / 60} minutes)`);
+  log(`🔄 Sistema Keep-alive iniciado!`);
+  log(`   → Ping a cada ${interval / 1000 / 60} minutos`);
+  log(`   → URL: ${baseUrl}`);
 }
 
 (async () => {
