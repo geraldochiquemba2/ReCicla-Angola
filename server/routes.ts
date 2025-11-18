@@ -173,8 +173,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Collections routes
-  app.get("/api/collections", requireAuth, async (req, res) => {
+  // Collections routes (public - no auth required to view)
+  app.get("/api/collections", async (req, res) => {
     try {
       const collections = await storage.getCollections();
       

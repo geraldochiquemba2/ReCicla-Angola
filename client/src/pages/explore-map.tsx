@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { useLocation } from "wouter";
 import { MapView } from "@/components/map-view";
 import { Button } from "@/components/ui/button";
@@ -10,7 +10,10 @@ import type { CollectionWithUsers } from "@shared/schema";
 import { ArrowLeft, Filter, MapPin } from "lucide-react";
 import { getWasteTypeLabel } from "@/components/waste-type-icon";
 import { getProvinces, getMunicipalities } from "@shared/angola-locations";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
+import { useAuth } from "@/lib/auth";
+import { useToast } from "@/hooks/use-toast";
+import { apiRequest, queryClient } from "@/lib/queryClient";
 
 export default function ExploreMap() {
   const [, setLocation] = useLocation();
@@ -18,9 +21,33 @@ export default function ExploreMap() {
   const [selectedProvince, setSelectedProvince] = useState<string>("");
   const [selectedMunicipality, setSelectedMunicipality] = useState<string>("");
   const [municipalities, setMunicipalities] = useState<string[]>([]);
+  const { user, isAuthenticated } = useAuth();
+  const { toast } = useToast();
 
   const { data: collections = [], isLoading } = useQuery<CollectionWithUsers[]>({
     queryKey: ["/api/collections"],
+  });
+
+  const acceptMutation = useMutation({
+    mutationFn: async (collectionId: string) => {
+      return await apiRequest(`/api/collections/${collectionId}/accept`, {
+        method: "POST",
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/collections"] });
+      toast({
+        title: "Recolha aceita com sucesso!",
+        description: "Pode agora agendar a recolha com o gerador",
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Erro ao aceitar recolha",
+        description: error.message || "Ocorreu um erro ao aceitar a recolha",
+        variant: "destructive",
+      });
+    },
   });
 
   useEffect(() => {
@@ -55,6 +82,32 @@ export default function ExploreMap() {
 
   const availableCount = collections.filter(c => c.status === "disponivel").length;
 
+  const handleAcceptCollection = useCallback((collection: CollectionWithUsers) => {
+    // Check if user is authenticated
+    if (!isAuthenticated) {
+      toast({
+        title: "Autenticação necessária",
+        description: "Por favor, faça login como reciclador para aceitar recolhas",
+        variant: "destructive",
+      });
+      setLocation("/login");
+      return;
+    }
+
+    // Check if user is a recycler
+    if (user?.userType !== "reciclador") {
+      toast({
+        title: "Acesso negado",
+        description: "Apenas recicladores podem aceitar recolhas. Por favor, crie uma conta como reciclador.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Accept the collection
+    acceptMutation.mutate(collection.id);
+  }, [isAuthenticated, user, acceptMutation, toast, setLocation]);
+
   return (
     <div className="min-h-screen bg-background">
       <header className="fixed top-0 w-full bg-background/80 backdrop-blur-md border-b z-[9999]">
@@ -88,6 +141,7 @@ export default function ExploreMap() {
               ) : (
                 <MapView
                   collections={filteredCollections}
+                  onAcceptClick={handleAcceptCollection}
                   className="h-[600px] w-full rounded-xl shadow-lg border"
                 />
               )}

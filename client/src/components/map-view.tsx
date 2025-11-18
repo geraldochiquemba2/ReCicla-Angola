@@ -17,6 +17,7 @@ interface MapViewProps {
   center?: [number, number];
   zoom?: number;
   onMarkerClick?: (collection: CollectionWithUsers) => void;
+  onAcceptClick?: (collection: CollectionWithUsers) => void;
   userLocation?: [number, number];
   className?: string;
 }
@@ -26,6 +27,7 @@ export function MapView({
   center = [-8.8383, 13.2344], // Luanda, Angola
   zoom = 12,
   onMarkerClick,
+  onAcceptClick,
   userLocation,
   className = "h-96 w-full rounded-xl",
 }: MapViewProps) {
@@ -115,16 +117,30 @@ export function MapView({
         }),
       }).addTo(mapRef.current);
 
-      const popupContent = `
-        <div class="p-2">
-          <h3 class="font-semibold">${getWasteTypeLabel(collection.wasteType)}</h3>
-          <p class="text-sm">${collection.quantity} kg</p>
-          <p class="text-sm text-muted-foreground">${collection.address}</p>
-          ${collection.pointsGenerated > 0 ? `<p class="text-sm font-semibold text-primary mt-1">${collection.pointsGenerated} pontos</p>` : ""}
-        </div>
+      // Create popup content with button for available collections
+      const popupDiv = document.createElement("div");
+      popupDiv.className = "p-2";
+      popupDiv.innerHTML = `
+        <h3 class="font-semibold mb-1">${getWasteTypeLabel(collection.wasteType)}</h3>
+        <p class="text-sm">${collection.quantity} kg</p>
+        <p class="text-sm text-muted-foreground">${collection.address}</p>
+        ${collection.pointsGenerated > 0 ? `<p class="text-sm font-semibold text-primary mt-1">${collection.pointsGenerated} pontos</p>` : ""}
       `;
 
-      marker.bindPopup(popupContent);
+      // Add accept button for available collections
+      if (collection.status === "disponivel" && onAcceptClick) {
+        const button = document.createElement("button");
+        button.className = "mt-2 w-full px-3 py-1.5 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-md transition-colors";
+        button.textContent = "Recolher";
+        button.setAttribute("data-testid", `button-accept-${collection.id}`);
+        button.onclick = (e) => {
+          e.stopPropagation();
+          onAcceptClick(collection);
+        };
+        popupDiv.appendChild(button);
+      }
+
+      marker.bindPopup(popupDiv);
 
       if (onMarkerClick) {
         marker.on("click", () => onMarkerClick(collection));
@@ -138,7 +154,7 @@ export function MapView({
       const group = L.featureGroup(markersRef.current);
       mapRef.current.fitBounds(group.getBounds().pad(0.1));
     }
-  }, [collections, userLocation, onMarkerClick]);
+  }, [collections, userLocation, onMarkerClick, onAcceptClick]);
 
   return <div ref={mapContainerRef} className={className} data-testid="map-view" />;
 }
