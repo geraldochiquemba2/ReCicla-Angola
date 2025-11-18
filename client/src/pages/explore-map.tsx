@@ -307,6 +307,16 @@ export default function ExploreMap() {
                                   {collection.status}
                                 </Badge>
                               </div>
+                              {collection.generator && (
+                                <div className="mb-2">
+                                  <p className="text-xs font-medium text-foreground">
+                                    {collection.generator.fullName}
+                                  </p>
+                                  <p className="text-xs text-muted-foreground">
+                                    {collection.generator.phone}
+                                  </p>
+                                </div>
+                              )}
                               <div className="flex items-center gap-1 text-xs text-muted-foreground">
                                 <MapPin className="h-3 w-3" />
                                 <span>{collection.address}</span>
