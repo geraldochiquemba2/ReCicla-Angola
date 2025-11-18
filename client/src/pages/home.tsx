@@ -18,6 +18,7 @@ import cardImage1 from "@assets/stock_images/smartphone_taking_ph_42557168.jpg";
 import cardImage2 from "@assets/stock_images/people_working_toget_e1e22104.jpg";
 import cardImage3 from "@assets/stock_images/rewards_prizes_money_5dfcdf13.jpg";
 import generatorBgImage from "@assets/stock_images/person_sorting_recyc_c62d4a9b.jpg";
+import ctaBackgroundImage from "@assets/stock_images/recycling_sustainabi_076cfd4e.jpg";
 
 const heroImages = [
   heroImage1,
@@ -344,29 +345,33 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-20 bg-primary text-primary-foreground">
-        <div className="container mx-auto px-4 max-w-4xl text-center">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+      <section className="relative py-20 overflow-hidden">
+        <div 
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: `url(${ctaBackgroundImage})` }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-black/60 to-black/70" />
+        
+        <div className="container mx-auto px-4 max-w-4xl text-center relative z-10">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
             Pronto para Fazer a Diferença?
           </h2>
-          <p className="text-xl mb-12 opacity-90">
+          <p className="text-xl mb-12 text-white/90">
             Junte-se a milhares de angolanos que já estão transformando resíduos em recompensas
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
               size="lg"
-              variant="secondary"
               onClick={() => setLocation("/register")}
-              className="text-lg px-8 py-6 h-auto"
+              className="text-lg px-8 py-6 h-auto bg-white/20 backdrop-blur-md border border-white/30 text-white hover:bg-white/30"
               data-testid="button-cta-register"
             >
               Criar Conta Grátis
             </Button>
             <Button
               size="lg"
-              variant="outline"
               onClick={() => setLocation("/login")}
-              className="text-lg px-8 py-6 h-auto border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10"
+              className="text-lg px-8 py-6 h-auto bg-white/10 backdrop-blur-md border border-white/30 text-white hover:bg-white/20"
               data-testid="button-cta-login"
             >
               Entrar
