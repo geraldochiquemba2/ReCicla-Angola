@@ -221,10 +221,11 @@ export default function Home() {
               ref={(el) => (videoRefs.current[index] = el)}
               muted
               playsInline
-              preload={index === 0 ? "auto" : "none"}
-              className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
+              preload="metadata"
+              className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-1000 ${
                 index === currentVideoIndex ? "opacity-100" : "opacity-0"
               }`}
+              style={{ objectPosition: "center center" }}
             >
               <source src={video} type="video/mp4" />
             </video>
@@ -286,8 +287,11 @@ export default function Home() {
 
       <section className="py-20 relative overflow-hidden">
         <div 
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${comoFuncionaBgImage})` }}
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ 
+            backgroundImage: `url(${comoFuncionaBgImage})`,
+            backgroundPosition: 'center center'
+          }}
         />
         <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-black/60 to-black/70" />
         
@@ -370,7 +374,9 @@ export default function Home() {
             loop
             muted
             playsInline
-            className="w-full h-full object-cover"
+            preload="metadata"
+            className="w-full h-full object-cover object-center"
+            style={{ objectPosition: "center center" }}
           >
             <source src={generatorBgVideo} type="video/mp4" />
           </video>
@@ -428,8 +434,11 @@ export default function Home() {
 
       <section className="relative py-20 overflow-hidden">
         <div 
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${recyclerBgImage})` }}
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ 
+            backgroundImage: `url(${recyclerBgImage})`,
+            backgroundPosition: 'center center'
+          }}
         />
         <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-black/60 to-black/70" />
         
@@ -495,8 +504,11 @@ export default function Home() {
 
       <section className="relative py-20 overflow-hidden">
         <div 
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${ctaBackgroundImage})` }}
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ 
+            backgroundImage: `url(${ctaBackgroundImage})`,
+            backgroundPosition: 'center center'
+          }}
         />
         <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-black/60 to-black/70" />
         

@@ -85,17 +85,19 @@ export default function Collections() {
   });
 
   const filterCollections = (status?: string) => {
-    if (status === "all") return collections;
+    const nonCancelledCollections = collections.filter(c => c.status !== "cancelado");
+    
+    if (status === "all") return nonCancelledCollections;
     if (status === "mine") {
       return user?.userType === "gerador"
-        ? collections.filter(c => c.generatorId === user.id)
-        : collections.filter(c => c.recyclerId === user?.id);
+        ? nonCancelledCollections.filter(c => c.generatorId === user.id)
+        : nonCancelledCollections.filter(c => c.recyclerId === user?.id);
     }
-    return collections.filter(c => c.status === status);
+    return nonCancelledCollections.filter(c => c.status === status);
   };
 
   const filteredCollections = filterCollections(selectedTab);
-  const availableCollections = collections.filter(c => c.status === "disponivel");
+  const availableCollections = filterCollections("disponivel");
 
   const getTabCount = (tab: string) => {
     return filterCollections(tab).length;
@@ -105,7 +107,10 @@ export default function Collections() {
     <div className="min-h-screen relative">
       <div 
         className="fixed inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(${collectionsBackground})` }}
+        style={{ 
+          backgroundImage: `url(${collectionsBackground})`,
+          backgroundPosition: 'center center'
+        }}
       />
       <div className="fixed inset-0 bg-background/30 dark:bg-background/30" />
       

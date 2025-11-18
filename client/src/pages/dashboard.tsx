@@ -30,14 +30,18 @@ export default function Dashboard() {
     enabled: !!user,
   });
 
-  const availableCollections = collections.filter(c => c.status === "disponivel");
-  const recentCollections = collections.slice(0, 3);
+  const nonCancelledCollections = collections.filter(c => c.status !== "cancelado");
+  const availableCollections = nonCancelledCollections.filter(c => c.status === "disponivel");
+  const recentCollections = nonCancelledCollections.slice(0, 3);
 
   return (
     <div className="min-h-screen relative">
       <div 
         className="fixed inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(${dashboardBackground})` }}
+        style={{ 
+          backgroundImage: `url(${dashboardBackground})`,
+          backgroundPosition: 'center center'
+        }}
       />
       <div className="fixed inset-0 bg-background/30 dark:bg-background/30" />
       

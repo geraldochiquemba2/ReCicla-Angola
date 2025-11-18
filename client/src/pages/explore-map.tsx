@@ -60,7 +60,9 @@ export default function ExploreMap() {
     }
   }, [selectedProvince]);
 
-  const filteredCollections = collections.filter(collection => {
+  const nonCancelledCollections = collections.filter(c => c.status !== "cancelado");
+  
+  const filteredCollections = nonCancelledCollections.filter(collection => {
     // Filter by status
     if (selectedStatus !== "all" && collection.status !== selectedStatus) {
       return false;
@@ -79,7 +81,7 @@ export default function ExploreMap() {
     return true;
   });
 
-  const availableCount = collections.filter(c => c.status === "disponivel").length;
+  const availableCount = nonCancelledCollections.filter(c => c.status === "disponivel").length;
 
   const handleAcceptCollection = useCallback((collection: CollectionWithUsers) => {
     // Check if user is authenticated
@@ -110,8 +112,11 @@ export default function ExploreMap() {
   return (
     <div className="min-h-screen relative">
       <div 
-        className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: `url(${exploreMapBgImage})` }}
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ 
+          backgroundImage: `url(${exploreMapBgImage})`,
+          backgroundPosition: 'center center'
+        }}
       />
       <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/50 to-black/60" />
       
@@ -171,7 +176,7 @@ export default function ExploreMap() {
                           onClick={() => setSelectedStatus("all")}
                           data-testid="filter-all"
                         >
-                          Todas ({collections.length})
+                          Todas ({nonCancelledCollections.length})
                         </Button>
                         <Button
                           variant={selectedStatus === "disponivel" ? "default" : "outline"}
