@@ -85,7 +85,7 @@ export const insertCollectionSchema = createInsertSchema(collections, {
   quantity: z.string().refine((val) => parseFloat(val) > 0, "Quantidade deve ser maior que 0"),
   description: z.string().optional(),
   photoUrl: z.string().optional(),
-  address: z.string().min(5, "Endereço deve ter pelo menos 5 caracteres"),
+  address: z.string().min(3, "Endereço é obrigatório"),
   latitude: z.string(),
   longitude: z.string(),
 }).omit({

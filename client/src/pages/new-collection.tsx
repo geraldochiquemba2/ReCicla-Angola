@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,6 +15,7 @@ import { insertCollectionSchema, type InsertCollection } from "@shared/schema";
 import { WasteTypeIcon, getWasteTypeLabel } from "@/components/waste-type-icon";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { MapPin, Package, FileText, Image, CheckCircle, ArrowLeft, Upload, X } from "lucide-react";
+import { getProvinces, getMunicipalities, getCoordinates } from "@shared/angola-locations";
 
 const wasteTypes = ["plastico", "papel", "vidro", "metal", "eletronicos", "organico"] as const;
 
@@ -24,6 +25,9 @@ export default function NewCollection() {
   const [step, setStep] = useState(1);
   const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [photoPreview, setPhotoPreview] = useState<string>("");
+  const [selectedProvince, setSelectedProvince] = useState<string>("");
+  const [selectedMunicipality, setSelectedMunicipality] = useState<string>("");
+  const [municipalities, setMunicipalities] = useState<string[]>([]);
 
   const form = useForm<InsertCollection>({
     resolver: zodResolver(insertCollectionSchema),
@@ -91,16 +95,20 @@ export default function NewCollection() {
   };
 
   const nextStep = async () => {
-    let fieldsToValidate: any[] = [];
-    
     if (step === 1) {
-      fieldsToValidate = ["wasteType", "quantity"];
+      const isValid = await form.trigger(["wasteType", "quantity"]);
+      if (isValid) {
+        setStep(step + 1);
+      }
     } else if (step === 2) {
-      fieldsToValidate = ["address", "latitude", "longitude"];
-    }
-    
-    const isValid = await form.trigger(fieldsToValidate);
-    if (isValid && step < 3) {
+      if (!selectedProvince || !selectedMunicipality) {
+        toast({
+          title: "Localização incompleta",
+          description: "Por favor, selecione a província e o município",
+          variant: "destructive",
+        });
+        return;
+      }
       setStep(step + 1);
     }
   };
@@ -122,6 +130,25 @@ export default function NewCollection() {
     setPhotoPreview("");
     form.setValue("photoUrl", "");
   };
+
+  useEffect(() => {
+    if (selectedProvince) {
+      const munis = getMunicipalities(selectedProvince);
+      setMunicipalities(munis);
+      setSelectedMunicipality("");
+    }
+  }, [selectedProvince]);
+
+  useEffect(() => {
+    if (selectedProvince && selectedMunicipality) {
+      const coords = getCoordinates(selectedProvince, selectedMunicipality);
+      if (coords) {
+        form.setValue("latitude", coords.latitude);
+        form.setValue("longitude", coords.longitude);
+        form.setValue("address", `${selectedMunicipality}, ${selectedProvince}`);
+      }
+    }
+  }, [selectedProvince, selectedMunicipality, form]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -261,71 +288,88 @@ export default function NewCollection() {
                 {/* Step 2: Localização */}
                 {step === 2 && (
                   <div className="space-y-6">
-                    <FormField
-                      control={form.control}
-                      name="address"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="flex items-center gap-2">
-                            <MapPin className="h-4 w-4" />
-                            Endereço
-                          </FormLabel>
-                          <FormControl>
-                            <Input
-                              placeholder="Rua, Bairro, Cidade"
-                              {...field}
-                              data-testid="input-address"
-                            />
-                          </FormControl>
-                          <FormDescription>
-                            Endereço onde o resíduo está localizado
-                          </FormDescription>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <div className="grid grid-cols-2 gap-4">
-                      <FormField
-                        control={form.control}
-                        name="latitude"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Latitude</FormLabel>
-                            <FormControl>
-                              <Input
-                                placeholder="-8.8383"
-                                {...field}
-                                data-testid="input-latitude"
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      <FormField
-                        control={form.control}
-                        name="longitude"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Longitude</FormLabel>
-                            <FormControl>
-                              <Input
-                                placeholder="13.2344"
-                                {...field}
-                                data-testid="input-longitude"
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
+                    <div>
+                      <FormLabel className="flex items-center gap-2 mb-2">
+                        <MapPin className="h-4 w-4" />
+                        Província
+                      </FormLabel>
+                      <Select
+                        value={selectedProvince}
+                        onValueChange={setSelectedProvince}
+                      >
+                        <SelectTrigger data-testid="select-province">
+                          <SelectValue placeholder="Selecione a província" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {getProvinces().map((province) => (
+                            <SelectItem key={province} value={province}>
+                              {province}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <p className="text-sm text-muted-foreground mt-2">
+                        Selecione a província onde o resíduo está localizado
+                      </p>
                     </div>
 
-                    <div className="p-4 bg-muted/50 rounded-lg text-sm text-muted-foreground">
-                      💡 Dica: Você pode usar seu GPS ou serviços como Google Maps para
-                      obter suas coordenadas exatas
+                    {selectedProvince && (
+                      <div>
+                        <FormLabel className="flex items-center gap-2 mb-2">
+                          <MapPin className="h-4 w-4" />
+                          Município
+                        </FormLabel>
+                        <Select
+                          value={selectedMunicipality}
+                          onValueChange={setSelectedMunicipality}
+                        >
+                          <SelectTrigger data-testid="select-municipality">
+                            <SelectValue placeholder="Selecione o município" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {municipalities.map((municipality) => (
+                              <SelectItem key={municipality} value={municipality}>
+                                {municipality}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <p className="text-sm text-muted-foreground mt-2">
+                          Selecione o município onde o resíduo está localizado
+                        </p>
+                      </div>
+                    )}
+
+                    {selectedProvince && selectedMunicipality && (
+                      <FormField
+                        control={form.control}
+                        name="address"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Endereço Complementar (opcional)</FormLabel>
+                            <FormControl>
+                              <Input
+                                placeholder="Rua, Bairro, Número..."
+                                {...field}
+                                data-testid="input-address"
+                              />
+                            </FormControl>
+                            <FormDescription>
+                              Adicione detalhes específicos do local (rua, bairro, número)
+                            </FormDescription>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    )}
+
+                    <div className="p-4 bg-primary/10 rounded-lg text-sm">
+                      <p className="font-semibold mb-1">Localização selecionada:</p>
+                      <p className="text-muted-foreground">
+                        {selectedMunicipality && selectedProvince
+                          ? `${selectedMunicipality}, ${selectedProvince}`
+                          : "Selecione a província e município"}
+                      </p>
                     </div>
                   </div>
                 )}
