@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/lib/auth";
 import { insertUserSchema, type InsertUser } from "@shared/schema";
+import { ArrowLeft } from "lucide-react";
 import logoIcon from "@assets/generated_images/ReCicla+_app_logo_icon_c8ba0c8a.png";
 import heroImg from "@assets/generated_images/Hero_background_environmental_impact_b855236c.png";
 
@@ -63,9 +64,21 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen flex">
-      {/* Left side - Hero */}
-      <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-gradient-to-br from-primary/20 via-background to-background">
+    <div className="min-h-screen flex flex-col">
+      <div className="p-4">
+        <Button
+          variant="ghost"
+          onClick={() => setLocation("/")}
+          data-testid="button-back"
+        >
+          <ArrowLeft className="h-5 w-5 mr-2" />
+          Voltar
+        </Button>
+      </div>
+      
+      <div className="flex flex-1">
+        {/* Left side - Hero */}
+        <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-gradient-to-br from-primary/20 via-background to-background">
         <div className="absolute inset-0">
           <img
             src={heroImg}
@@ -239,6 +252,7 @@ export default function Register() {
           </Card>
         </div>
       </div>
+    </div>
     </div>
   );
 }
