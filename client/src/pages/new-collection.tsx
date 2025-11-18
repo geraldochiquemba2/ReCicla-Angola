@@ -501,7 +501,7 @@ export default function NewCollection() {
                       className="flex-1"
                       data-testid="button-submit"
                     >
-                      {createMutation.isPending ? "Criando..." : "Criar Recolha"}
+                      {createMutation.isPending ? "Finalizando..." : "Finalizar"}
                     </Button>
                   )}
                 </div>
