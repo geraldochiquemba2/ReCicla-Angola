@@ -119,9 +119,8 @@ export default function Login() {
             alt="Ambiente limpo"
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-background/95 backdrop-blur-sm" />
         </div>
-        <Card className="w-full max-w-md border-none shadow-none lg:border lg:shadow-sm relative z-10">
+        <Card className="w-full max-w-md border-none shadow-none lg:border lg:shadow-sm relative z-10 bg-background/90 backdrop-blur-md">
           <CardHeader className="space-y-1">
             <div className="flex items-center gap-2 mb-4 lg:hidden">
               <img src={logoIcon} alt="ReCicla+" className="h-8 w-8" />
