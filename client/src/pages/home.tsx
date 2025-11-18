@@ -17,6 +17,7 @@ import communityImage from "@assets/stock_images/community_volunteers_20ba1c74.j
 import cardImage1 from "@assets/stock_images/smartphone_taking_ph_42557168.jpg";
 import cardImage2 from "@assets/stock_images/people_working_toget_e1e22104.jpg";
 import cardImage3 from "@assets/stock_images/rewards_prizes_money_5dfcdf13.jpg";
+import generatorBgImage from "@assets/stock_images/person_sorting_recyc_c62d4a9b.jpg";
 
 const heroImages = [
   heroImage1,
@@ -224,60 +225,61 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-20 bg-card">
-        <div className="container mx-auto px-4 max-w-7xl">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-4xl md:text-5xl font-bold mb-6">
-                Para Geradores de Resíduos
-              </h2>
-              <p className="text-lg text-muted-foreground mb-8">
-                Transforme o que você não precisa em valor. Nossa plataforma facilita a conexão com recicladores profissionais que recolhem seus resíduos e você ainda ganha pontos por contribuir para um planeta mais limpo.
-              </p>
-              <ul className="space-y-4 mb-8">
-                <li className="flex items-start gap-3">
-                  <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary/10 mt-0.5">
-                    <TrendingUp className="h-4 w-4 text-primary" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold mb-1">Ganhe Pontos</h4>
-                    <p className="text-muted-foreground">Acumule pontos por cada kg reciclado</p>
-                  </div>
-                </li>
-                <li className="flex items-start gap-3">
-                  <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary/10 mt-0.5">
-                    <MapPin className="h-4 w-4 text-primary" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold mb-1">Recolha no Local</h4>
-                    <p className="text-muted-foreground">Recicladores vão até você</p>
-                  </div>
-                </li>
-                <li className="flex items-start gap-3">
-                  <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary/10 mt-0.5">
-                    <Leaf className="h-4 w-4 text-primary" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold mb-1">Impacto Real</h4>
-                    <p className="text-muted-foreground">Acompanhe seu contributo ambiental</p>
-                  </div>
-                </li>
-              </ul>
-              <Button
-                size="lg"
-                onClick={() => setLocation("/register")}
-                data-testid="button-generator-register"
-              >
-                Começar como Gerador
-              </Button>
-            </div>
-            <div className="relative rounded-xl overflow-hidden">
-              <img
-                src={recyclingImage}
-                alt="Geradores de resíduos"
-                className="w-full h-[500px] object-cover"
-              />
-            </div>
+      <section className="py-20 relative overflow-hidden">
+        <div className="absolute inset-0">
+          <img
+            src={generatorBgImage}
+            alt="Geradores de resíduos"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/70 to-black/60" />
+        </div>
+        
+        <div className="container mx-auto px-4 max-w-7xl relative z-10">
+          <div className="max-w-3xl">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
+              Para Geradores de Resíduos
+            </h2>
+            <p className="text-lg text-white/90 mb-8">
+              Transforme o que você não precisa em valor. Nossa plataforma facilita a conexão com recicladores profissionais que recolhem seus resíduos e você ainda ganha pontos por contribuir para um planeta mais limpo.
+            </p>
+            <ul className="space-y-4 mb-8">
+              <li className="flex items-start gap-3">
+                <div className="flex items-center justify-center w-6 h-6 rounded-full bg-white/20 backdrop-blur-sm mt-0.5">
+                  <TrendingUp className="h-4 w-4 text-white" />
+                </div>
+                <div>
+                  <h4 className="font-semibold mb-1 text-white">Ganhe Pontos</h4>
+                  <p className="text-white/80">Acumule pontos por cada kg reciclado</p>
+                </div>
+              </li>
+              <li className="flex items-start gap-3">
+                <div className="flex items-center justify-center w-6 h-6 rounded-full bg-white/20 backdrop-blur-sm mt-0.5">
+                  <MapPin className="h-4 w-4 text-white" />
+                </div>
+                <div>
+                  <h4 className="font-semibold mb-1 text-white">Recolha no Local</h4>
+                  <p className="text-white/80">Recicladores vão até você</p>
+                </div>
+              </li>
+              <li className="flex items-start gap-3">
+                <div className="flex items-center justify-center w-6 h-6 rounded-full bg-white/20 backdrop-blur-sm mt-0.5">
+                  <Leaf className="h-4 w-4 text-white" />
+                </div>
+                <div>
+                  <h4 className="font-semibold mb-1 text-white">Impacto Real</h4>
+                  <p className="text-white/80">Acompanhe seu contributo ambiental</p>
+                </div>
+              </li>
+            </ul>
+            <Button
+              size="lg"
+              onClick={() => setLocation("/register")}
+              className="bg-primary hover:bg-primary/90 border border-primary-border"
+              data-testid="button-generator-register"
+            >
+              Começar como Gerador
+            </Button>
           </div>
         </div>
       </section>
